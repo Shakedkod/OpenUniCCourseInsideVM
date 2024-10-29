@@ -1,0 +1,6 @@
+mycalc: calc.o prog.o
+	gcc -ansi -Wall -g prog.o calc.o -o mycalc -ln
+prog.o: prog.c data.h
+	gcc -c -ansi -Wall -o prog.o
+calc.o: calc.c data.h
+	gcc -c -ansi -Wall -o calc.o -ln
