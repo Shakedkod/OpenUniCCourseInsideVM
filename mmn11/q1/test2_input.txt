@@ -1,0 +1,8 @@
+HELLO WORLD MY NAME IS SHAKED, how are you? "iM aLright.".
+iM InThis\n\t           HELLO AGAIN. youuuuuuuuuuuuuu!!!!!!
+1234567891011121314                 54yoYoOY.
+cO5Ulomb's Law describes the elecTrostatic force between two point charges. Write about how the force is proportional to the product of the charges and inversely proportional to the square of the distance between them. Include the constant
+𝑘
+k (coulomb Constant) and typical values in a vacUum.
+Arrays: Fixed-size s.tructures that store ELEMENTS12 in contiguous memory locations. Explain their efficiency in iNdexIng but limitatIoNs in dynaMic resiZing.
+Plan how you will gather user"eof. ya? Ya. Hi"feedback after launch to improve the app.
