@@ -61,6 +61,12 @@ build CMakeFiles/Uni.dir/mmn11/q1/letters.c.o: C_COMPILER__Uni_unscanned_Debug /
   OBJECT_DIR = CMakeFiles/Uni.dir
   OBJECT_FILE_DIR = CMakeFiles/Uni.dir/mmn11/q1
 
+build CMakeFiles/Uni.dir/mmn11/q2/bits_xy.c.o: C_COMPILER__Uni_unscanned_Debug /home/ubuntu/Desktop/Uni/mmn11/q2/bits_xy.c || cmake_object_order_depends_target_Uni
+  DEP_FILE = CMakeFiles/Uni.dir/mmn11/q2/bits_xy.c.o.d
+  FLAGS = -g -std=gnu90 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/Uni.dir
+  OBJECT_FILE_DIR = CMakeFiles/Uni.dir/mmn11/q2
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Uni
@@ -69,7 +75,7 @@ build CMakeFiles/Uni.dir/mmn11/q1/letters.c.o: C_COMPILER__Uni_unscanned_Debug /
 #############################################
 # Link the executable Uni
 
-build Uni: C_EXECUTABLE_LINKER__Uni_Debug CMakeFiles/Uni.dir/lesson1/class1.c.o CMakeFiles/Uni.dir/mmn11/q1/letters.c.o
+build Uni: C_EXECUTABLE_LINKER__Uni_Debug CMakeFiles/Uni.dir/lesson1/class1.c.o CMakeFiles/Uni.dir/mmn11/q1/letters.c.o CMakeFiles/Uni.dir/mmn11/q2/bits_xy.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/Uni.dir
   POST_BUILD = :
