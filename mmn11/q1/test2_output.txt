@@ -1,0 +1,9 @@
+Hello, please enter some sentences into the machine:
+Hello world my name is shaked, how are you? "IM ALRIGHT.".
+Im inthis\n\t           hello again. Youuuuuuuuuuuuuu!!!!!!
+                 yoyooy.
+Coulomb's law describes the electrostatic force between two point charges. Write about how the force is proportional to the product of the charges and inversely proportional to the square of the distance between them. Include the constant
+𝑘
+k (coulomb constant) and typical values in a vacuum.
+Arrays: fixed-size s.Tructures that store elements in contiguous memory locations. Explain their efficiency in indexing but limitations in dynamic resizing.
+Plan how you will gather user"EOF. YA? YA. HI"Feedback after launch to improve the app.
