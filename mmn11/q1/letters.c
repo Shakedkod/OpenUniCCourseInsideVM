@@ -38,7 +38,7 @@ int main()
                 isStartOfSentence = 1;
 
             /* output */
-            printf("%c", c);
+            putchar(c);
         }
     }
 
