@@ -19,27 +19,27 @@ int main()
     printf("Hello, please enter some sentences into the machine:\n");
     while ((c = getchar()) != EOF)
     {
-        if (isNumber(c))
-            continue;
-
-        if (isQuote) /* in quote */
-            c = toupper(c);
-        else if (isStartOfSentence && !isSpace(c)) /* first letter of a sentence */
+        if (!isNumber(c))
         {
-            c = toupper(c);
-            isStartOfSentence = 0;
+            if (isQuote) /* in quote */
+                c = toupper(c);
+            else if (isStartOfSentence && !isSpace(c)) /* first letter of a sentence */
+            {
+                c = toupper(c);
+                isStartOfSentence = 0;
+            }
+            else /* normal characters */
+                c = tolower(c);
+
+            if (c == '"') /* start & end of quote */
+                isQuote = isQuote ? 0 : 1;
+
+            if (c == '.')
+                isStartOfSentence = 1;
+
+            /* output */
+            printf("%c", c);
         }
-        else /* normal characters */
-            c = tolower(c);
-
-        if (c == '"') /* start & end of quote */
-            isQuote = isQuote ? 0 : 1;
-
-        if (c == '.')
-            isStartOfSentence = 1;
-
-        /* output */
-        printf("%c", c);
     }
 
     return 0;
