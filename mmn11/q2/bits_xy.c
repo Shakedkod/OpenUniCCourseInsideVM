@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-void printBinary(long x)
+void printBinary(unsigned long x)
 {
     int size = sizeof(x) * 8;
-    unsigned long mask = 1 << (size - 1);
+    unsigned long mask = 1UL << (size - 1);
     while (mask)
     {
         printf("%d", (x & mask) ? 1 : 0);
@@ -12,16 +12,9 @@ void printBinary(long x)
     printf("\n");
 }
 
-unsigned long createMask(const char isBaseOne, const int index)
+unsigned long turnOnBitAtIndex(const unsigned long bits, const int index)
 {
-    return isBaseOne
-        ? ~(1<<(index - 1))
-        : 1<<(index - 1);
-}
-
-unsigned long lightUpABit(const unsigned long bits, const int index)
-{
-    const unsigned long mask = 1 << (index - 1);
+    const unsigned long mask = 1UL << (index - 1);
     return bits | mask;
 }
 
@@ -30,16 +23,15 @@ int main()
     unsigned long x = 12, y;
 
     printBinary(x);
-    printBinary(lightUpABit(x, 0));
-    printBinary(lightUpABit(x, 1));
-    printBinary(lightUpABit(x, 2));
-    printBinary(lightUpABit(x, 3));
-    printBinary(lightUpABit(x, 4));
-    printBinary(lightUpABit(x, 5));
-    printBinary(lightUpABit(x, 6));
-    printBinary(lightUpABit(x, 7));
-    printBinary(lightUpABit(x, 8));
-    printBinary(lightUpABit(x, 9));
+    printBinary(turnOnBitAtIndex(x, 1));
+    printBinary(turnOnBitAtIndex(x, 2));
+    printBinary(turnOnBitAtIndex(x, 3));
+    printBinary(turnOnBitAtIndex(x, 4));
+    printBinary(turnOnBitAtIndex(x, 5));
+    printBinary(turnOnBitAtIndex(x, 6));
+    printBinary(turnOnBitAtIndex(x, 7));
+    printBinary(turnOnBitAtIndex(x, 8));
+    printBinary(turnOnBitAtIndex(x, 9));
 
     return 0;
 }
