@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/Uni.dir/lesson1/class1.c.o CMakeFiles/Uni.dir/mmn11/q1/letters.c.o CMakeFiles/Uni.dir/mmn11/q2/bits_xy.c.o CMakeFiles/Uni.dir/lesson2/numbersThatDivededBy3.c.o -o Uni
