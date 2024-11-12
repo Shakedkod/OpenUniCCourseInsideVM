@@ -1,3 +1,0 @@
-/home/ubuntu/Desktop/Uni/cmake-build-debug/CMakeFiles/Uni.dir
-/home/ubuntu/Desktop/Uni/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/ubuntu/Desktop/Uni/cmake-build-debug/CMakeFiles/rebuild_cache.dir

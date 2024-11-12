@@ -3,7 +3,8 @@
 
 int main()
 {
-    char c, isStartOfSentence = 1, isQuote = 0;
+    int c;
+    char isStartOfSentence = 1, isQuote = 0;
 
     printf("Hello, please enter some sentences into the machine:\n");
     while ((c = getchar()) != EOF)
