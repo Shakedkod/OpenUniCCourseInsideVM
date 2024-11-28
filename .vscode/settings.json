@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "part1.h": "c",
+        "stdio.h": "c"
+    }
+}
