@@ -1,0 +1,25 @@
+Please enter a line of 0 & 1 without any spaces between them. For each line you need to enter 11 characters.
+ if a character is not 0 or 1, it will be inserted as 0.
+line 1: line 2: line 3: line 4: line 5: line 6: line 7: line 8: line 9: line 10: line 11: 
+-----------------------------------
+| 0  0  0  0  1  1  0  1  0  1  1 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 0  1  0  0  0  0  0  0  0  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 1  0  1  0  0  0  0  0  1  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 0  0  0  1  0  0  0  0  0  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+| 0  0  0  0  0  0  0  0  0  0  0 |
+-----------------------------------
+enter two numbers with a comma between them to check if there is a path between the first one and the second one:
+There is a path between 6 and 1.
+enter two numbers with a comma between them to check if there is a path between the first one and the second one:
+There is a path between 0 and 9.
+enter two numbers with a comma between them to check if there is a path between the first one and the second one:
+There isn't a path between 2 and 10.
+enter two numbers with a comma between them to check if there is a path between the first one and the second one:
+There isn't a path between 1 and 2.
+enter two numbers with a comma between them to check if there is a path between the first one and the second one:

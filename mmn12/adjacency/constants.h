@@ -7,7 +7,4 @@ typedef enum
     TRUE
 } Bool;
 
-#define N 10
-typedef Bool adjmat[N][N];
-
 #endif

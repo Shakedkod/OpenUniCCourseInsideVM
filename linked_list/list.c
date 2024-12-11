@@ -1,6 +1,6 @@
 #include "list.h"
 
-void addNode(node **head, int newKey)
+void addNode(node **head, void *(*createNewData)())
 {
     node *temp = *head;
 
@@ -13,7 +13,7 @@ void addNode(node **head, int newKey)
             exit(1);
         }
 
-        (*head)->key = newKey;
+        (*head)->data = createNewData();
         (*head)->next = NULL;
 
         return;
@@ -30,11 +30,11 @@ void addNode(node **head, int newKey)
     }
 
     temp = (node *)temp->next;
-    temp->key = newKey;
+    temp->data = createNewData();
     temp->next = NULL;
 }
 
-void removeNode(node **head, int removeKey)
+void removeNode(node **head, void *(*getDeleteKey)(), int removeKey, void (*deleteFunction)(void **))
 {
     node *temp1 = *head;
     node *temp2;
@@ -43,14 +43,15 @@ void removeNode(node **head, int removeKey)
         return;
     temp2 = (node *)((*head)->next);
 
-    if (temp1->key == removeKey)
+    if (getDeleteKey(temp1) == removeKey)
     {
         *head = (node *)((*head)->next);
+        deleteFunction(&(temp1->data));
         free(temp1);
         return;
     }
     
-    while (temp2 != NULL && temp2->key != removeKey)
+    while (temp2 != NULL && getDeleteKey(temp2) != removeKey)
     {
         temp1 = temp2;
         temp2 = (node *)temp2->next;
@@ -59,13 +60,14 @@ void removeNode(node **head, int removeKey)
     if (temp2 != NULL)
     {
         temp1->next = (ptr)temp2->next;
+        deleteFunction(&(temp2->data));
         free(temp2);
     }
     else
         printf("There is no node with the value to delete.\n");
 }
 
-void printList(node *head)
+void printList(node *head, void (*printFunction)(void *))
 {
     node *temp = head;
 
@@ -74,7 +76,7 @@ void printList(node *head)
 
     while (temp != NULL)
     {
-        printf("%d", temp->key);
+        printFunction(temp);
 
         if (temp->next != NULL)
             printf(" -> ");

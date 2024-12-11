@@ -7,18 +7,18 @@
 typedef struct node *ptr;
 typedef struct
 {
-    int key;
+    void *data;
     ptr next;
 } node;
 
 /* explain addNode*/
-void addNode(node **head, int newKey);
+void addNode(node **head, void *(*createNewData)());
 
 /* explain removeNode*/
-void removeNode(node **head, int removeKey);
+void removeNode(node **head, void *(*getDeleteId)(), int removeKey, void (*deleteFunction)(void **));
 
 /* explain printList*/
-void printList(node *head);
+void printList(node *head, void (*printFunction)(void *));
 
 /* explain deleteList*/
 void deleteList(node **head);
