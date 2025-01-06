@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.pm_file": "json",
         "part1.h": "c",
         "stdio.h": "c",
         "typeinfo": "c",
@@ -7,7 +8,16 @@
         "string": "c",
         "string_view": "c",
         "constants.h": "c",
-        "adjmat.h": "c"
+        "adjmat.h": "c",
+        "complex.h": "c",
+        "optional": "c",
+        "system_error": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "complex": "c",
+        "stdlib.h": "c"
     },
     "cSpell.words": [
         "adjmat"
