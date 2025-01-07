@@ -5,11 +5,12 @@
 
 Bool findPath(adjmat treeMap, int indexU, int indexV, Bool visited[N])
 {
+    /* this function gets an adjmat and two indexes and checks if there is a path from indexU to indexV */
     int i = 0;
 
     if (indexU >= N || indexV >= N)
         return FALSE;
-    if (visited[indexU])
+    if (visited[indexU]) /* if we return to the same one there is a loop in the adjmat */
         return FALSE;
     if (treeMap[indexU][indexV] || indexU == indexV)
         return TRUE;
@@ -28,6 +29,7 @@ Bool findPath(adjmat treeMap, int indexU, int indexV, Bool visited[N])
 
 Bool path(adjmat treeMap, int indexU, int indexV)
 {
+    /* this function gets a adjmat and two indexes and checks if there is a path from indexU to indexV */
     Bool visited[N] = {0};
     if (indexU >= N || indexV >= N)
         return FALSE;

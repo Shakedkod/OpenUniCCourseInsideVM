@@ -1,9 +1,0 @@
-{
-    "makefile.launchConfigurations": [
-        {
-            "cwd": "/home/ubuntu/Desktop/Uni/mmn12/adjacency",
-            "binaryPath": "/home/ubuntu/Desktop/Uni/mmn12/adjacency/adjacency",
-            "binaryArgs": []
-        }
-    ]
-}
