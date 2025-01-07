@@ -17,7 +17,8 @@
         "type_traits": "c",
         "utility": "c",
         "complex": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "random": "c"
     },
     "cSpell.words": [
         "adjmat"

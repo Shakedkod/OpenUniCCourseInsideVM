@@ -4,27 +4,27 @@
 
 #include "complex.h"
 
-void reset_number_to_zero(complex *value)
+void reset_number_to_zero(complex value)
 {
     if (value == NULL)
         return;
     
-    value->a = 0;
-    value->b = 0;
+    value[0] = 0;
+    value[1] = 0;
 }
 
-void read_comp(complex *value, double a, double b)
+void read_comp(complex value, double a, double b)
 {
     if (value == NULL)
         return;
     
-    value->a = a;
-    value->b = b;
+    value[0] = a;
+    value[1] = b;
 }
 
-void print_comp(complex value)
+void print_comp(const complex value)
 {
-    double a = value.a, b = value.b;
+    double a = value[0], b = value[1];
     char op = '+';
 
     if (b < 0)
