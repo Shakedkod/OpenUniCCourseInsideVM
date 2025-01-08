@@ -25,20 +25,17 @@ void read_comp(complex value, double a, double b)
 void print_comp(const complex value)
 {
     double a = value[0], b = value[1];
-    char op = '+';
 
     if (b < 0)
-    {
         b = -b;
-        op = '-';
-    }
 
     if (a == floor(a) && b == floor(b)) /* a && b == int*/
-        printf("%d %c %di\n", (int)a, op, (int)b);
+        printf("%d + %di\n", (int)a, (int)b);
     else if (a == floor(a)) /* a == int, b != int*/
-        printf("%d %c (%g)i\n", (int)a, op, b);
+        printf("%d + (%g)i\n", (int)a, b);
     else if (b == floor(b)) /* a != int, b == int*/
-        printf("%g %c %di\n", a, op, (int)b);
+        printf("%g + %di\n", a, (int)b);
     else /* a && b != int*/
-        printf("%g %c (%g)i\n", a, op, b);
+        printf("%g + (%g)i\n", a, b);
 }
+
