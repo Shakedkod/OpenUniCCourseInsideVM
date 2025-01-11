@@ -3,12 +3,12 @@
 
 #include "complex.h"
 
-struct
+char *commands[] =
 {
-    char *name;
-    void (*func)(void);
-} commands[] = {
-    {"read_comp", read_comp},
+    "mult_comp_real", "mult_comp_img", "mult_comp_comp",
+    "print_comp",
+    "read_comp",  
+    "stop", "sub_comp",
 };
 
 #endif
