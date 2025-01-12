@@ -18,7 +18,10 @@
         "utility": "c",
         "complex": "c",
         "stdlib.h": "c",
-        "random": "c"
+        "random": "c",
+        "string.h": "c",
+        "string_manipulation.h": "c",
+        "user_interface.h": "c"
     },
     "cSpell.words": [
         "adjmat"

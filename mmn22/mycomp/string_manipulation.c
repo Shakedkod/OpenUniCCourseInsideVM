@@ -2,6 +2,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include "string_manipulation.h"
+
 char *to_lowercase(char *str) 
 {
     int i = 0;
@@ -56,7 +58,7 @@ int is_all_whitespaces(const char *str)
     return 1;
 }
 
-int strcmp_for_commands(const char *a, const char *b)
+code strcmp_for_commands(const char *a, const char *b)
 {
     /*
     returns:
@@ -66,28 +68,33 @@ int strcmp_for_commands(const char *a, const char *b)
         3 - string are equal but a has a comma at the end
     */
 
-   int len_a = strlen(a), len_b = strlen(b), i = 0;
+    int len_a = strlen(a), len_b = strlen(b), i = 0;
 
     if (len_a < len_b)
-        return 0;
+        return CONTINUE;
 
     if (len_a == len_b)
     {
         for (; i < len_a; i++)
         {
             if (a[i] != b[i])
-                return 0;
+                return CONTINUE;
         }
-        return 1;
+        return OK;
     }
     
     for (; i < len_b; i++)
     {
         if (a[i] != b[i])
-            return 0;
+            return CONTINUE;
     }
 
     if (a[len_b] == ',')
-        return 3;
-    return 2;
+        return ILLEGAL_COMMA;
+    return UNDEFINED_COMMAND;
+}
+
+char *get_string_until_first_space(char *str)
+{
+
 }

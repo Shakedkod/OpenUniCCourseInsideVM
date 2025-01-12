@@ -1,24 +1,172 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "user_interface.h"
 #include "string_manipulation.h"
-#include "coms.h"
+#include "complex.h"
 
-code read_line()
+#define REMOVABLE_TOKENS " \t"
+
+code call_abs_comp();
+code call_add_comp();
+code call_mult_comp_comp();
+code call_mult_comp_img();
+code call_mult_comp_real();
+code call_print_comp();
+code call_read_comp();
+code call_sub_comp();
+
+typedef enum 
 {
-    char *command;
-    
-    /* removing all of the whitespaces */
-    scanf("%s", command);
-    while (is_all_whitespaces(command))
-        scanf("%s", command);
-    
-    if (command[0] == ',')
-        return ILLEGAL_COMMA;
-    
-    
+    READ_ERROR = -1,
+    READ_EOF = 0, /* line ends at EOF */
+    READ_NEWLINE = 1
+} read_status;
 
-    return OK;
+typedef struct
+{
+    char line[1024];
+    read_status status;
+} line_read;
+
+line_read read_line() 
+{
+    int len;
+    line_read result;
+    result.status = READ_ERROR;
+
+    if (fgets(result.line, sizeof(result.line), stdin) != NULL)
+    {
+        /* Check if we found newline */
+        len = strlen(result.line);
+        if (result.line[len-1] == '\n')
+            result.status = READ_NEWLINE;
+        else
+            result.status = READ_EOF;
+    }
+    else
+    {
+        /* Nothing read - EOF or error */
+        result.status = feof(stdin) ? READ_EOF : READ_ERROR;
+        result.line[0] = '\0';
+    }
+
+    return result;
+}
+
+code execute_line(char line[1024])
+{
+    char *part;
+    code compare;
+    line_read read = read_line();
+    if (read.status == READ_EOF)
+        return EXIT_EOF;
+    if (read.status == READ_ERROR)
+        return READING_ERROR;
+    if (is_all_whitespaces(read.line))
+        return EMPTY;
+
+    /* get command */
+    strcpy(line, read.line);
+    part = strtok(line, REMOVABLE_TOKENS);
+    if (part == NULL)
+        return UNDEFINED_COMMAND;
+    
+    /* parse command */
+    compare = strcmp_for_commands(part, "abs_comp");
+    if (compare == OK)
+        return call_abs_comp();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "add_comp");
+    if (compare == OK)
+        return call_add_comp();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "mult_comp_comp");
+    if (compare == OK)
+        return call_mult_comp_comp();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "mult_comp_img");
+    if (compare == OK)
+        return call_mult_comp_img();
+    if (compare != CONTINUE)
+        return compare;
+
+    compare = strcmp_for_commands(part, "mult_comp_real");
+    if (compare == OK)
+        return call_mult_comp_real();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "print_comp");
+    if (compare == OK)
+        return call_print_comp();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "read_comp");
+    if (compare == OK)
+        return call_read_comp();
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "stop");
+    if (compare == OK)
+        return EXIT_STOP;
+    if (compare != CONTINUE)
+        return compare;
+    
+    compare = strcmp_for_commands(part, "sub_comp");
+    if (compare == OK)
+        return call_sub_comp();
+    if (compare != CONTINUE)
+        return compare;
+
+    return UNDEFINED_COMMAND;
 }
 
 /* COMMANDS FUNCTIONS */
+code call_abs_comp()
+{
+    return OK;
+}
+
+code call_add_comp()
+{
+    return OK;
+}
+
+code call_mult_comp_comp()
+{
+    return OK;
+}
+
+code call_mult_comp_img()
+{
+    return OK;
+}
+
+code call_mult_comp_real()
+{
+    return OK;
+}
+
+code call_print_comp()
+{
+    return OK;
+}
+
+code call_read_comp()
+{
+    return OK;
+}
+
+code call_sub_comp()
+{
+    return OK;
+}
