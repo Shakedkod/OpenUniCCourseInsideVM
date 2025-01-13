@@ -14,6 +14,7 @@ code call_mult_comp_img();
 code call_mult_comp_real();
 code call_print_comp();
 code call_read_comp();
+code call_stop();
 code call_sub_comp();
 
 typedef enum 
@@ -40,7 +41,10 @@ line_read read_line()
         /* Check if we found newline */
         len = strlen(result.line);
         if (result.line[len-1] == '\n')
+        {
+            result.line[len-1] = '\0';
             result.status = READ_NEWLINE;
+        }
         else
             result.status = READ_EOF;
     }
@@ -59,18 +63,26 @@ code execute_line(char line[1024])
     char *part;
     code compare;
     line_read read = read_line();
-    if (read.status == READ_EOF)
-        return EXIT_EOF;
     if (read.status == READ_ERROR)
         return READING_ERROR;
     if (is_all_whitespaces(read.line))
         return EMPTY;
 
+    /* print the command for visibility */
+    printf("%s\n", read.line);
+
     /* get command */
     strcpy(line, read.line);
-    part = strtok(line, REMOVABLE_TOKENS);
+    part = strtok(read.line, REMOVABLE_TOKENS);
     if (part == NULL)
         return UNDEFINED_COMMAND;
+    
+    /* check for EOF */
+    if (read.status == READ_EOF)
+        if (strcmp_for_commands(part, "stop") == OK)
+            return call_stop(1);
+        else
+            return EXIT_EOF;
     
     /* parse command */
     compare = strcmp_for_commands(part, "abs_comp");
@@ -117,7 +129,7 @@ code execute_line(char line[1024])
     
     compare = strcmp_for_commands(part, "stop");
     if (compare == OK)
-        return EXIT_STOP;
+        return call_stop(0);
     if (compare != CONTINUE)
         return compare;
     
@@ -164,6 +176,15 @@ code call_print_comp()
 code call_read_comp()
 {
     return OK;
+}
+
+code call_stop(int is_eof)
+{
+    char *part = strtok(NULL, REMOVABLE_TOKENS);
+    if (part != NULL)
+        return (is_eof) ? EXIT_EXCESS_AND_EOF : EXCESS;
+
+    return EXIT_STOP;
 }
 
 code call_sub_comp()

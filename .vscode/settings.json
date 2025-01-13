@@ -21,7 +21,8 @@
         "random": "c",
         "string.h": "c",
         "string_manipulation.h": "c",
-        "user_interface.h": "c"
+        "user_interface.h": "c",
+        "coms.h": "c"
     },
     "cSpell.words": [
         "adjmat"
