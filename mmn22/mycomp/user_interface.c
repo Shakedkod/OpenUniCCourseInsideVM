@@ -58,6 +58,28 @@ line_read read_line()
     return result;
 }
 
+complex get_comp_value(char var, vars variables, code *defined)
+{
+    switch (var)
+    {
+    case 'A':
+        return *(variables.A);
+    case 'B':
+        return *(variables.B);
+    case 'C':
+        return *(variables.C);
+    case 'D':
+        return *(variables.D);
+    case 'E':
+        return *(variables.E);
+    case 'F':
+        return *(variables.F);
+    
+    default:
+        *(defined) = UNDEFINED_VAR;
+    }
+}
+
 code execute_line(vars variables, boolean *is_eof)
 {
     char *part;
@@ -139,6 +161,50 @@ code execute_line(vars variables, boolean *is_eof)
 /* COMMANDS FUNCTIONS */
 code call_abs_comp(vars variables)
 {
+    char var;
+    int num_of_vars, i, valueInt;
+    double value;
+    complex actual_var;
+    code defined = OK;
+
+    char *part = strtok(NULL, REMOVABLE_TOKENS);
+    if (part == NULL)
+        return MISSING_VAR;
+    
+    /* finding the var name */
+    num_of_vars = sscanf(part, "%c", &var);
+    if (num_of_vars < 1)
+        return MISSING_VAR;
+    
+    /* getting the value of the var */
+    actual_var = get_comp_value(var, variables, &defined);
+    if (defined != OK)
+        return defined;
+
+    /* no comma or char after var */
+    for (i = 1; part[i] != '\0'; i++)
+    {
+        if (part[i] == ',')
+            return ILLEGAL_COMMA;
+        
+        return EXCESS;
+    }
+
+    /* no comma or char after a space */
+    part = strtok(NULL, REMOVABLE_TOKENS);
+    if (part != NULL)
+    {
+        if (part[0] == ',')
+            return ILLEGAL_COMMA;
+        return EXCESS;
+    }
+
+    /* executing */
+    value = abs_comp(actual_var);
+    if ((valueInt = (int)value) == value)
+        printf("%d\n", valueInt);
+    else
+        printf("%.2lf\n", value);
     return OK;
 }
 
@@ -164,49 +230,45 @@ code call_mult_comp_real(vars variables)
 
 code call_print_comp(vars variables)
 {
-    char var; /* 1013 = 1024 - 11(the length of "print_comp ")*/
-    char *part = strtok(NULL, REMOVABLE_TOKENS);
+    char var;
+    int num_of_vars, i;
     complex actual_var;
-    int num_of_vars;
+    code defined = OK;
+
+    char *part = strtok(NULL, REMOVABLE_TOKENS);
     if (part == NULL)
         return MISSING_VAR;
     
-    num_of_vars = fscanf((FILE *)part, "%c", &var);
-    printf("num_of_vars: %d\n", num_of_vars);
+    /* finding the var name */
+    num_of_vars = sscanf(part, "%c", &var);
     if (num_of_vars < 1)
         return MISSING_VAR;
-    if (num_of_vars > 1)
-        return EXCESS;
     
-    switch (var)
+    /* getting the value of the var */
+    actual_var = get_comp_value(var, variables, &defined);
+    if (defined != OK)
+        return defined;
+
+    /* no comma or char after var */
+    for (i = 1; part[i] != '\0'; i++)
     {
-    case 'A':
-        actual_var = *(variables.A);
-        break;
-    case 'B':
-        actual_var = *(variables.B);
-        break;
-    case 'C':
-        actual_var = *(variables.C);
-        break;
-    case 'D':
-        actual_var = *(variables.D);
-        break;
-    case 'E':
-        actual_var = *(variables.E);
-        break;
-    case 'F':
-        actual_var = *(variables.F);
-        break;
-    
-    default:
-        return UNDEFINED_VAR;
+        if (part[i] == ',')
+            return ILLEGAL_COMMA;
+        
+        return EXCESS;
     }
 
-    /* no comma or var after var */
-
+    /* no comma or char after a space */
     part = strtok(NULL, REMOVABLE_TOKENS);
+    if (part != NULL)
+    {
+        if (part[0] == ',')
+            return ILLEGAL_COMMA;
+        return EXCESS;
+    }
 
+    /* executing */
+    print_comp(actual_var);
     return OK;
 }
 

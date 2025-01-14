@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "coms.h"
 
 char *code_to_str(code value)
@@ -24,9 +26,32 @@ char *code_to_str(code value)
         return "UNDEFINED_VAR";
     case EXIT_STOP:
         return "EXIT_STOP";
-    case EXIT_EOF:
-        return "EXIT_EOF";
     default:
         return "ERROR READING CODE";
+    }
+}
+
+void print_error(code error)
+{
+    switch (error)
+    {
+    case ILLEGAL_COMMA:
+        printf("Illegal comma.\n");
+        break;
+    case UNDEFINED_COMMAND:
+        printf("Undefined command name.\n");
+        break;
+    case EXCESS:
+        printf("Extraneous text after end of command.\n");
+        break;
+    case MISSING_VAR:
+        printf("Missing parameter.\n");
+        break;
+    case UNDEFINED_VAR:
+        printf("Undefined complex variable.\n");
+        break;
+    
+    default:
+        break;
     }
 }

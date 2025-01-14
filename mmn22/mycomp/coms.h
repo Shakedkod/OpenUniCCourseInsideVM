@@ -35,7 +35,7 @@ typedef enum
     READING_ERROR,
 
     /* exit codes */
-    EXIT_STOP, EXIT_EOF
+    EXIT_STOP
 } code;
 
 typedef enum
@@ -54,8 +54,7 @@ typedef enum
     COMMA
 } var_type;
 
-code error_eof(char *line);
-code error_reading(char *line);
+void print_error(code error);
 
 /* debug functions - remove */
 char *code_to_str(code value);
