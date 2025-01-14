@@ -161,8 +161,7 @@ code execute_line(vars variables, boolean *is_eof)
 /* COMMANDS FUNCTIONS */
 code call_abs_comp(vars variables)
 {
-    char var;
-    int num_of_vars, i, valueInt;
+    int i, valueInt;
     double value;
     complex actual_var;
     code defined = OK;
@@ -171,13 +170,8 @@ code call_abs_comp(vars variables)
     if (part == NULL)
         return MISSING_VAR;
     
-    /* finding the var name */
-    num_of_vars = sscanf(part, "%c", &var);
-    if (num_of_vars < 1)
-        return MISSING_VAR;
-    
     /* getting the value of the var */
-    actual_var = get_comp_value(var, variables, &defined);
+    actual_var = get_comp_value(part[0], variables, &defined);
     if (defined != OK)
         return defined;
 
@@ -210,6 +204,19 @@ code call_abs_comp(vars variables)
 
 code call_add_comp(vars variables)
 {
+    char var;
+    int num_of_vars, i, var2;
+    complex actual_var;
+    code defined = OK;
+
+    char *part = strtok(NULL, REMOVABLE_TOKENS);
+    if (part == NULL)
+        return MISSING_VAR;
+    
+    /* finding the var name */
+    
+
+    /*sscanf(part, "%c,%d", &var, &var2);*/
     return OK;
 }
 
@@ -230,8 +237,7 @@ code call_mult_comp_real(vars variables)
 
 code call_print_comp(vars variables)
 {
-    char var;
-    int num_of_vars, i;
+    int i;
     complex actual_var;
     code defined = OK;
 
@@ -239,13 +245,8 @@ code call_print_comp(vars variables)
     if (part == NULL)
         return MISSING_VAR;
     
-    /* finding the var name */
-    num_of_vars = sscanf(part, "%c", &var);
-    if (num_of_vars < 1)
-        return MISSING_VAR;
-    
     /* getting the value of the var */
-    actual_var = get_comp_value(var, variables, &defined);
+    actual_var = get_comp_value(part[0], variables, &defined);
     if (defined != OK)
         return defined;
 
