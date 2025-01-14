@@ -16,8 +16,12 @@ char *code_to_str(code value)
         return "UNDEFINED_COMMAND";
     case READING_ERROR:
         return "READING_ERROR";
-    case EXIT_EXCESS_AND_EOF:
-        return "EXITS_EXCESS_AND_EOF";
+    case EXCESS:
+        return "EXCESS";
+    case MISSING_VAR:
+        return "MISSING_VAR";
+    case UNDEFINED_VAR:
+        return "UNDEFINED_VAR";
     case EXIT_STOP:
         return "EXIT_STOP";
     case EXIT_EOF:

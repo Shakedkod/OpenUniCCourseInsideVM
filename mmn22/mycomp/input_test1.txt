@@ -19,4 +19,4 @@ abs_comp A
 abs_comp B
 abs_comp C
 abs_comp F
-stop A
+stop 

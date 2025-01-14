@@ -2,6 +2,23 @@
 #define COMS_H
 /* coms == communication */
 
+#include "complex.h"
+
+typedef struct 
+{
+    complex *A;
+    complex *B;
+    complex *C;
+    complex *D;
+    complex *E;
+    complex *F;
+} vars;
+
+typedef enum
+{
+    FALSE, TRUE
+} boolean;
+
 typedef enum
 {
     /* system codes*/
@@ -11,12 +28,14 @@ typedef enum
     ILLEGAL_COMMA,
     UNDEFINED_COMMAND,
     EXCESS,
+    MISSING_VAR,
+    UNDEFINED_VAR,
 
     /* machine error codes */
     READING_ERROR,
 
     /* exit codes */
-    EXIT_STOP, EXIT_EOF, EXIT_EXCESS_AND_EOF
+    EXIT_STOP, EXIT_EOF
 } code;
 
 typedef enum

@@ -8,20 +8,18 @@ int main()
 {
     complex A = {}, B = {}, C = {}, D = {}, E = {}, F = {};
     code status = OK;
-    char current_line[1024];
+    boolean eof = FALSE;
 
-    while (1)
+    /* for easier send to the execute_line() function with keeping their individuality by their name in the struct*/
+    vars variables = { &A, &B, &C, &D, &E, &F };
+
+    while (TRUE)
     {
-        status = execute_line(current_line);
+        status = execute_line(variables, &eof);
         printf("status: %s\n", code_to_str(status));
         if (status == EXIT_STOP)
             return 0;
-        if (status == EXIT_EXCESS_AND_EOF)
-        {
-            printf("EXCESS ERROR\n");
-            status = EXIT_EOF;
-        }
-        if (status == EXIT_EOF)
+        if (eof)
         {
             printf("EOF IS NOT EXCEPTED\n");
             return 1;

@@ -3,6 +3,6 @@
 
 #include "coms.h"
 
-code execute_line(char line[1024]);
+code execute_line(vars variables, boolean *is_eof);
 
 #endif
