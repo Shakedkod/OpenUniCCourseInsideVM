@@ -1,0 +1,71 @@
+The program is ready for your next command: read_comp
+Missing parameter.
+The program is ready for your next command: read_comp A
+Missing comma.
+The program is ready for your next command: read_comp A,
+Missing parameter.
+The program is ready for your next command: read_comp A, 1.1
+Missing comma.
+The program is ready for your next command: read_comp A, 1.1,
+Missing parameter.
+The program is ready for your next command: read_comp A, 1.1, 2.2,
+Extraneous text after end of command.
+The program is ready for your next command: read_comp a, 1.1, 2.2
+Undefined complex variable.
+The program is ready for your next command: read_comp 1, 1.1, 2.2
+Undefined complex variable.
+The program is ready for your next command: read_comp A, abc, 2.2
+Invalid parameter - not a number.
+The program is ready for your next command: read_comp A, 1.1, def
+Invalid parameter - not a number.
+The program is ready for your next command: read_comp A, 1.1, 2.2.5
+Invalid parameter - multiple dots in a number.
+The program is ready for your next command: read_comp A, 1.1, 2.2A
+Invalid parameter - letters in a number.
+The program is ready for your next command: read_comp A,, 1.1, 2.2
+Multiple consecutive commas.
+The program is ready for your next command: print_comp
+Missing parameter.
+The program is ready for your next command: print_comp A, B
+Illegal comma.
+The program is ready for your next command: print_comp a
+Undefined complex variable.
+The program is ready for your next command: add_comp
+Missing parameter.
+The program is ready for your next command: add_comp A
+Missing comma.
+The program is ready for your next command: add_comp A,
+Missing parameter.
+The program is ready for your next command: add_comp A, B,
+Extraneous text after end of command.
+The program is ready for your next command: add_comp a, B
+Undefined complex variable.
+The program is ready for your next command: sub_comp
+Missing parameter.
+The program is ready for your next command: mult_comp_real
+Missing parameter.
+The program is ready for your next command: mult_comp_real A
+Missing comma.
+The program is ready for your next command: mult_comp_real A,
+Missing parameter.
+The program is ready for your next command: mult_comp_real A, 1.1,
+Extraneous text after end of command.
+The program is ready for your next command: mult_comp_real a, 1.1
+Undefined complex variable.
+The program is ready for your next command: mult_comp_img
+Missing parameter.
+The program is ready for your next command: mult_comp_comp
+Missing parameter.
+The program is ready for your next command: abs_comp
+Missing parameter.
+The program is ready for your next command: abs_comp A,
+Illegal comma.
+The program is ready for your next command: abs_comp a
+Undefined complex variable.
+The program is ready for your next command: STOP
+Undefined command name.
+The program is ready for your next command: stop extra text
+Extraneous text after end of command.
+The program is ready for your next command: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis faucibus mauris vitae tincidunt bibendum. Suspendisse eu diam elit. Quisque et velit hendrerit, iaculis mi a, molestie ligula. In tortor tellus, molestie vitae pulvinar dictum, bibendum non tellus. Praesent a blandit augue, sit amet pretium quam. Suspendisse a dui euismod, feugiat purus vitae, fermentum justo. Donec eu ornare leo. Donec sit amet ligula et justo aliquet faucibus sit amet a augue. Curabitur dapibus sem et leo pharetra, a ornare ex scelerisque. Aliquam non massa viverra, suscipit nunc in, porttitor magna. Morbi tempus euismod nunc in blandit. Fusce in euismod nisi.  Suspendisse potenti. Pellentesque semper tincidunt eros sit amet consectetur. Curabitur vitae finibus eros. Ut non interdum lectus. Sed eu ante eu tellus dapibus sollicitudin convallis quis quam. Quisque elit lorem, ornare sed lacus a, rhoncus eleifend metus. Vestibulum enim elit, suscipit id ex sed, molestie fermentum magna. Nulla posuere ullamcorper magna, consequat tellus.
+Max line length is 1024 characters.
+EOF is not a proper way to end the program. use the 'stop' command.

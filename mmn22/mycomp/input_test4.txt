@@ -1,0 +1,9 @@
+read_comp    A,    1.1,    2.2
+read_comp B,1.1,2.2
+read_comp C,	1.1,	2.2
+     read_comp      D,      1.1,      2.2
+print_comp    A
+print_comp B
+print_comp	C
+     print_comp      D
+stop

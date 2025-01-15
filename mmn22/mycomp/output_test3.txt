@@ -1,0 +1,21 @@
+The program is ready for your next command: read_comp A, 999999.999, -999999.999
+The program is ready for your next command: print_comp A
+1000000.00 - (1000000.00)i
+The program is ready for your next command: read_comp B, 0.000001, 0.000001
+The program is ready for your next command: print_comp B
+0.00 + (0.00)i
+The program is ready for your next command: add_comp A, B
+1000000.00 - (1000000.00)i
+The program is ready for your next command: sub_comp A, B
+1000000.00 - (1000000.00)i
+The program is ready for your next command: mult_comp_real A, 0.5
+500000.00 - (500000.00)i
+The program is ready for your next command: mult_comp_img A, 0.5
+500000.00 + (500000.00)i
+The program is ready for your next command: mult_comp_comp A, B
+2.00 + 0i
+The program is ready for your next command: abs_comp A
+1414213.56
+The program is ready for your next command: abs_comp B
+0.00
+The program is ready for your next command: stop

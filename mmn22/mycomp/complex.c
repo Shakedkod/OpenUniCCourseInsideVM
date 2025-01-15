@@ -13,21 +13,26 @@ complex read_comp(double a, double b)
 void print_comp(const complex value)
 {
     double a = value.real, b = value.image;
-    int aInt = (int)a, bInt = (int)b;
+    int a_int = round(a), b_int = round(b);
     char op = '+';
 
     if (b < 0)
     {
         b = -b;
+        b_int = -b_int;
         op = '-';
     }
 
-    if (a == aInt && b == bInt) /* a && b == int*/
-        printf("%d %c %di\n", aInt, op, bInt);
-    else if (a == aInt) /* a == int, b != int*/
-        printf("%d %c (%.2lf)i\n", aInt, op, b);
-    else if (b == bInt) /* a != int, b == int*/
-        printf("%.2lf %c %di\n", a, op, bInt);
+    if ((fabs(a - a_int) < 1e-5) && fabs(b) == 1) /* a == int, b == 1*/
+        printf("%d %c i\n", a_int, op);
+    else if (fabs(b) == 1) /* a != int, b == 1*/
+        printf("%.2lf %c i\n", a, op);
+    else if ((fabs(a - a_int) < 1e-5) && (fabs(b - b_int) < 1e-5)) /* a && b == int*/
+        printf("%d %c %di\n", a_int, op, b_int);
+    else if (fabs(a - a_int) < 1e-5) /* a == int, b != int*/
+        printf("%d %c (%.2lf)i\n", a_int, op, b);
+    else if (fabs(b - b_int) < 1e-5) /* a != int, b == int*/
+        printf("%.2lf %c %di\n", a, op, b_int);
     else /* a && b != int*/
         printf("%.2lf %c (%.2lf)i\n", a, op, b);
 }

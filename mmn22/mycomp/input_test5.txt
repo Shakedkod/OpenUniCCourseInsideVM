@@ -1,0 +1,35 @@
+read_comp
+read_comp A
+read_comp A,
+read_comp A, 1.1
+read_comp A, 1.1,
+read_comp A, 1.1, 2.2,
+read_comp a, 1.1, 2.2
+read_comp 1, 1.1, 2.2
+read_comp A, abc, 2.2
+read_comp A, 1.1, def
+read_comp A, 1.1, 2.2.5
+read_comp A, 1.1, 2.2A
+read_comp A,, 1.1, 2.2
+print_comp
+print_comp A, B
+print_comp a
+add_comp
+add_comp A
+add_comp A,
+add_comp A, B,
+add_comp a, B
+sub_comp
+mult_comp_real
+mult_comp_real A
+mult_comp_real A,
+mult_comp_real A, 1.1,
+mult_comp_real a, 1.1
+mult_comp_img
+mult_comp_comp
+abs_comp
+abs_comp A,
+abs_comp a
+STOP
+stop extra text
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis faucibus mauris vitae tincidunt bibendum. Suspendisse eu diam elit. Quisque et velit hendrerit, iaculis mi a, molestie ligula. In tortor tellus, molestie vitae pulvinar dictum, bibendum non tellus. Praesent a blandit augue, sit amet pretium quam. Suspendisse a dui euismod, feugiat purus vitae, fermentum justo. Donec eu ornare leo. Donec sit amet ligula et justo aliquet faucibus sit amet a augue. Curabitur dapibus sem et leo pharetra, a ornare ex scelerisque. Aliquam non massa viverra, suscipit nunc in, porttitor magna. Morbi tempus euismod nunc in blandit. Fusce in euismod nisi.  Suspendisse potenti. Pellentesque semper tincidunt eros sit amet consectetur. Curabitur vitae finibus eros. Ut non interdum lectus. Sed eu ante eu tellus dapibus sollicitudin convallis quis quam. Quisque elit lorem, ornare sed lacus a, rhoncus eleifend metus. Vestibulum enim elit, suscipit id ex sed, molestie fermentum magna. Nulla posuere ullamcorper magna, consequat tellus.

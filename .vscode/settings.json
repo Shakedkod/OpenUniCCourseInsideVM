@@ -25,6 +25,9 @@
         "coms.h": "c"
     },
     "cSpell.words": [
-        "adjmat"
+        "adjmat",
+        "coms",
+        "mult",
+        "mycomp"
     ]
 }

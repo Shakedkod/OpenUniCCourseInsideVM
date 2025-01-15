@@ -1,0 +1,14 @@
+read_comp E, 10.5, -3.2
+print_comp E
+read_comp F, 7.1, 8.9
+add_comp E, F
+mult_comp_real E, 2.5
+mult_comp_img F, 1.5
+mult_comp_comp E , F
+abs_comp E
+comp_add E, F
+Add_Comp E, F
+read_comp A, B, C
+add_comp E,, F
+sub_comp
+stop

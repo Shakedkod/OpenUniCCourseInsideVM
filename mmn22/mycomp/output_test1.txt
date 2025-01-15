@@ -1,0 +1,40 @@
+The program is ready for your next command: print_comp A
+0 + 0i
+The program is ready for your next command: print_comp B
+0 + 0i
+The program is ready for your next command: print_comp C
+0 + 0i
+The program is ready for your next command: read_comp A, 45.1, -23.75
+The program is ready for your next command: print_comp A
+45.10 - (23.75)i
+The program is ready for your next command: read_comp B, 54.2, 3.56
+The program is ready for your next command: print_comp B
+54.20 + (3.56)i
+The program is ready for your next command: read_comp C, 0, -1
+The program is ready for your next command: print_comp C
+0 - i
+The program is ready for your next command: add_comp A, B
+99.30 - (20.19)i
+The program is ready for your next command: sub_comp C, A
+-45.10 + (22.75)i
+The program is ready for your next command: sub_comp B, B
+0 + 0i
+The program is ready for your next command: sub_comp D, A
+-45.10 + (23.75)i
+The program is ready for your next command: mult_comp_real A, 2.51
+113.20 - (59.61)i
+The program is ready for your next command: mult_comp_img A, -2.564
+-60.90 - (115.64)i
+The program is ready for your next command: mult_comp_comp A, B
+2528.97 - (1126.69)i
+The program is ready for your next command: mult_comp_comp E , C
+0 + 0i
+The program is ready for your next command: abs_comp A
+50.97
+The program is ready for your next command: abs_comp B
+54.32
+The program is ready for your next command: abs_comp C
+1
+The program is ready for your next command: abs_comp F
+0
+The program is ready for your next command: stop 

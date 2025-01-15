@@ -4,7 +4,7 @@ mycomp: mycomp.o complex.o coms.o user_interface.o string_manipulation.o
 mycomp.o: mycomp.c
 	gcc -c mycomp.c -o mycomp.o
 user_interface.o: user_interface.c user_interface.h
-	gcc -c user_interface.c -o user_interface.o
+	gcc -c user_interface.c -o user_interface.o -lm
 string_manipulation.o: string_manipulation.c string_manipulation.h
 	gcc -c string_manipulation.c -o string_manipulation.o
 coms.o: coms.c coms.h

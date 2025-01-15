@@ -1,0 +1,25 @@
+The program is ready for your next command: read_comp E, 10.5, -3.2
+The program is ready for your next command: print_comp E
+10.50 - (3.20)i
+The program is ready for your next command: read_comp F, 7.1, 8.9
+The program is ready for your next command: add_comp E, F
+17.60 + (5.70)i
+The program is ready for your next command: mult_comp_real E, 2.5
+26.25 - (8.00)i
+The program is ready for your next command: mult_comp_img F, 1.5
+-13.35 + (10.65)i
+The program is ready for your next command: mult_comp_comp E , F
+103.03 + (70.73)i
+The program is ready for your next command: abs_comp E
+10.98
+The program is ready for your next command: comp_add E, F
+Undefined command name.
+The program is ready for your next command: Add_Comp E, F
+Undefined command name.
+The program is ready for your next command: read_comp A, B, C
+Invalid parameter - not a number.
+The program is ready for your next command: add_comp E,, F
+Multiple consecutive commas.
+The program is ready for your next command: sub_comp
+Missing parameter.
+The program is ready for your next command: stop

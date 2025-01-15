@@ -4,6 +4,8 @@
 
 #include "complex.h"
 
+#define MAX_LINE_LENGTH 1024
+
 typedef struct 
 {
     complex *A;
@@ -25,11 +27,17 @@ typedef enum
     OK, CONTINUE, EMPTY,
 
     /* user error codes */
+    TOO_LONG,
+    MISSING_COMMA,
     ILLEGAL_COMMA,
+    EXTRA_COMMA,
     UNDEFINED_COMMAND,
     EXCESS,
     MISSING_VAR,
     UNDEFINED_VAR,
+    IP_LETTERS_IN_NUMBER,
+    IP_NOT_A_NUMBER,
+    IP_MULTIPLE_DOTS,
 
     /* machine error codes */
     READING_ERROR,
@@ -55,8 +63,5 @@ typedef enum
 } var_type;
 
 void print_error(code error);
-
-/* debug functions - remove */
-char *code_to_str(code value);
 
 #endif
