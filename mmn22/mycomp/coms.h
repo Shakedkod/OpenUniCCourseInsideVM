@@ -62,6 +62,12 @@ typedef enum
     COMMA
 } var_type;
 
+/*
+    a function that prints an error if there is one and if not, it doesn't print anything.
+
+    input:
+        code error: the code for the error to be printed.
+*/
 void print_error(code error);
 
 #endif
