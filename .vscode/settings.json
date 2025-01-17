@@ -22,7 +22,8 @@
         "string.h": "c",
         "string_manipulation.h": "c",
         "user_interface.h": "c",
-        "coms.h": "c"
+        "coms.h": "c",
+        "algorithm": "c"
     },
     "cSpell.words": [
         "adjmat",

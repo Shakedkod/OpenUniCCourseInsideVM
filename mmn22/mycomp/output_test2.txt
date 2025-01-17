@@ -5,7 +5,7 @@ The program is ready for your next command: read_comp F, 7.1, 8.9
 The program is ready for your next command: add_comp E, F
 17.60 + (5.70)i
 The program is ready for your next command: mult_comp_real E, 2.5
-26.25 - (8.00)i
+26.25 - 8i
 The program is ready for your next command: mult_comp_img F, 1.5
 -13.35 + (10.65)i
 The program is ready for your next command: mult_comp_comp E , F

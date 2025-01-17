@@ -1,0 +1,1 @@
+The program is ready for your next command: EOF is not a proper way to end the program. use the 'stop' command.

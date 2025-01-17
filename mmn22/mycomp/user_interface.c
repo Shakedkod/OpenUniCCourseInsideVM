@@ -8,6 +8,7 @@
 #include "complex.h"
 
 #define REMOVABLE_TOKENS " \t"
+#define NUMBER_OF_FUNCTIONS 9
 
 code call_abs_comp(vars variables);
 code call_add_comp(vars variables);
@@ -18,6 +19,22 @@ code call_print_comp(vars variables);
 code call_read_comp(vars variables);
 code call_stop();
 code call_sub_comp(vars variables);
+
+struct function_connect
+{
+    char *name;
+    code (*func)(vars);
+} functions[] = {
+    {"abs_comp", call_abs_comp},
+    {"add_comp", call_add_comp},
+    {"mult_comp_comp", call_mult_comp_comp},
+    {"mult_comp_img", call_mult_comp_img},
+    {"mult_comp_real", call_mult_comp_real},
+    {"print_comp", call_print_comp},
+    {"read_comp", call_read_comp},
+    {"stop", call_stop},
+    {"sub_comp", call_sub_comp}
+};
 
 typedef enum 
 {
@@ -116,6 +133,7 @@ complex *get_comp_pointer(char var, vars variables, code *defined)
 code execute_line(vars variables, boolean *is_eof)
 {
     char *part, c;
+    int i;
     code compare;
     line_read read = read_line();
     if (read.status == READ_ERROR)
@@ -132,10 +150,10 @@ code execute_line(vars variables, boolean *is_eof)
 
         return TOO_LONG;
     }
-    if (is_all_whitespaces(read.line))
-        return EMPTY;
     if (read.status == READ_EOF)
         *(is_eof) = TRUE;
+    if (is_all_whitespaces(read.line))
+        return EMPTY;
 
     /* print the command for visibility */
     printf("%s\n", read.line);
@@ -146,60 +164,15 @@ code execute_line(vars variables, boolean *is_eof)
         return UNDEFINED_COMMAND;
     
     /* parse command */
-    compare = strcmp_for_commands(part, "abs_comp");
-    if (compare == OK)
-        return call_abs_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
+    for (i = 0; i < NUMBER_OF_FUNCTIONS; i++)
+    {
+        compare = strcmp_for_commands(part, functions[i].name);
+        if (compare == OK)
+            return (functions[i].func)(variables);
+        if (compare != CONTINUE)
+            return compare;
+    }
     
-    compare = strcmp_for_commands(part, "add_comp");
-    if (compare == OK)
-        return call_add_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "mult_comp_comp");
-    if (compare == OK)
-        return call_mult_comp_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "mult_comp_img");
-    if (compare == OK)
-        return call_mult_comp_img(variables);
-    if (compare != CONTINUE)
-        return compare;
-
-    compare = strcmp_for_commands(part, "mult_comp_real");
-    if (compare == OK)
-        return call_mult_comp_real(variables);
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "print_comp");
-    if (compare == OK)
-        return call_print_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "read_comp");
-    if (compare == OK)
-        return call_read_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "stop");
-    if (compare == OK)
-        return call_stop();
-    if (compare != CONTINUE)
-        return compare;
-    
-    compare = strcmp_for_commands(part, "sub_comp");
-    if (compare == OK)
-        return call_sub_comp(variables);
-    if (compare != CONTINUE)
-        return compare;
-
     return UNDEFINED_COMMAND;
 }
 

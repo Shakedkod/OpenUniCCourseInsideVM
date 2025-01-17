@@ -7,9 +7,10 @@
 boolean is_all_whitespaces(const char *str)
 {
     int i;
+    
     if (str == NULL || str[0] == '\0')
         return TRUE;
-    
+
     for (i = 0; i < strlen(str); i++)
         if (!isspace(str[i]))
             return FALSE;
