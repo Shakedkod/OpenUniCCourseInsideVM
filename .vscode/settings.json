@@ -23,12 +23,15 @@
         "string_manipulation.h": "c",
         "user_interface.h": "c",
         "coms.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "time.h": "c",
+        "user_input.h": "c"
     },
     "cSpell.words": [
         "adjmat",
         "coms",
         "mult",
-        "mycomp"
+        "mycomp",
+        "timediff"
     ]
 }

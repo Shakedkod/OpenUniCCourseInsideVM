@@ -1,0 +1,15 @@
+The first time is 29/3/2024 7:1:2.
+The second time is 28/3/2023 7:1:2.
+The difference between them is 31622400 seconds.
+In line 2 there is a missing number. there should be 12 numbers per line separated by whitespaces.
+In line 3 there are too many numbers. there should be 12 numbers per line separated by whitespaces.
+The first time is 29/3/2024 7:1:2.
+The second time is 28/3/2023 7:1:2.
+The difference between them is 31622400 seconds.
+The first time is 29/3/-50 7:2:50.
+The second time is 11/12/10 12:2:47.
+The difference between them is 1914382797 seconds.
+The first time is 29/3/-5000 7:2:50.
+The second time is 11/12/10000000 12:2:47.
+The difference between them is 315517702222797 seconds.
+The day 30 isn't in this month
