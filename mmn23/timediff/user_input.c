@@ -21,6 +21,7 @@ typedef enum
 
 boolean is_all_whitespaces(const char *str)
 {
+    /* checks if a string is just whitespaces */
     int i;
     
     if (str == NULL || str[0] == '\0')
@@ -35,6 +36,7 @@ boolean is_all_whitespaces(const char *str)
 
 int count_lines(FILE *file) 
 {
+    /* counts the number of lines in a file */
     int ch, lines = 1;
 
     fseek(file, 0, SEEK_END);
@@ -73,6 +75,7 @@ code read_file(int argc, char *argv[], FILE **output, int *num_of_lines)
 
 code check_time_validity(int time, const time_field type)
 {
+    /* checks if a time is valid */
     switch (type)
     {
     case MONTH:

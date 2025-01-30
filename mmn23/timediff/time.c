@@ -16,6 +16,7 @@ unsigned int _number_of_days_in_a_month[] = {
 
 long seconds_in_year(time t)
 {
+    /* retuns the seconds from the start of the year in seconds */
     return (
         (_days_in_a_month[t.month - 1] * SECONDS_PER_DAY) +
         ((t.day - 1) * SECONDS_PER_DAY) +

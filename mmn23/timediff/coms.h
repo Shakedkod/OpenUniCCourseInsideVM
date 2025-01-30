@@ -29,6 +29,13 @@ typedef enum
     TRUE
 } boolean;
 
+/* 
+    prints an error based on a code given and a line given. 
+
+    input:
+        1. code status: the status of the program. can be an error.
+        2. int line: the line where the status originates from.
+*/
 void print_error(code status, int line);
 
 #endif
