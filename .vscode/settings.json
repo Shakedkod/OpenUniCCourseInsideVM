@@ -25,7 +25,8 @@
         "coms.h": "c",
         "algorithm": "c",
         "time.h": "c",
-        "user_input.h": "c"
+        "user_input.h": "c",
+        "cstdio": "cpp"
     },
     "cSpell.words": [
         "adjmat",
