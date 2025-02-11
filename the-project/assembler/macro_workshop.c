@@ -62,7 +62,7 @@ code expand_macros(FILE *input, FILE **output, macro_trie *output_macros)
             fprintf(temp_file, current_macro->value);
         else if (strcmp(part, MACRO_DEF_START)) /* found a macro definition */
         {
-            if ((status = create_macro()))
+            if ((status = create_macro(input, current_macro, output_macros)) != OK) /* TODO */
         }
         else /* not a macro */
             fprintf(temp_file, current.line);
