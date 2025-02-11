@@ -5,6 +5,8 @@
 #include "../coms.h"
 
 #define NUM_OF_ALLOWED_CHARACTERS 53 /* 26 small characters, 26 large characters and one underscore */
+#define MACRO_DEF_START "macro"
+#define MACRO_DEF_END "macroend"
 
 /* MACRO TYPE */
 typedef struct
@@ -13,6 +15,7 @@ typedef struct
     char *value;
 } macro;
 
+boolean is_name_allowed(const char *name);
 boolean equals(macro a, macro b);
 
 /* MACRO TRIE */
@@ -24,7 +27,7 @@ typedef struct
 } macro_trie;
 
 macro_trie init_macro_trie();
-void add_data_to_tree(macro_trie head, macro node);
-macro get_data_for_name(macro_trie head, const char *name);
+void add_macro_to_tree(macro_trie *head, macro node);
+macro *get_macro_for_name(macro_trie head, const char *name);
 
 #endif

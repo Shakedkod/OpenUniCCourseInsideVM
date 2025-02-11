@@ -26,11 +26,14 @@
         "algorithm": "c",
         "time.h": "c",
         "user_input.h": "c",
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "macro_workshop.h": "c",
+        "file.h": "c"
     },
     "cSpell.words": [
         "adjmat",
         "coms",
+        "macroend",
         "mult",
         "mycomp",
         "timediff"
