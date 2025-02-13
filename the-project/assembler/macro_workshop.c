@@ -5,8 +5,9 @@
 
 code create_macro(FILE *file, macro *output, macro_trie *tree)
 {
-    char data[80], *part;
+    char *part, *buffer, *pos, *temp;
     line_read current;
+    size_t buffer_len = 0, buffer_size = 0, line_len = 0;
 
     /* name */
     part = strtok(NULL, WHITESPACES);
@@ -24,19 +25,92 @@ code create_macro(FILE *file, macro *output, macro_trie *tree)
     
     /* value */
     current = read_line(file);
-    while (current.status != READ_ERROR && !strcmp(part, MACRO_DEF_END))
+    buffer_size = MAX_LINE_LENGTH * sizeof(char);
+    buffer = malloc(buffer_size);
+    if (buffer == NULL)
+        return E_MEMORY_NEEDED;
+
+    pos = buffer;
+    *pos = '\0';
+
+    while (!(current.status == READ_ERROR || current.status == READ_EOF) && !strcmp(part, MACRO_DEF_END))
     {
         part = strtok(current.line, WHITESPACES);
-        if ((part == NULL) || !strcmp(part, MACRO_DEF_END))
+        if ((part != NULL) && !strcmp(part, MACRO_DEF_END))
         {
-            /* TODO, REALLOC THE STRING EACH TIME AND WORK ON IT. */
+            line_len = strlen(current.line);
+            buffer_len += line_len;
+
+            /* checks if we need to resize the buffer */
+            if (buffer_size < buffer_len + 1)
+            {
+                buffer_size += MAX_LINE_LENGTH;
+                temp = realloc(buffer, buffer_size);
+                if (temp == NULL)
+                {
+                    free(buffer);
+                    return E_MEMORY_NEEDED;
+                }
+                buffer = temp;
+                pos = buffer + strlen(buffer);
+            }
+
+            /* updates buffer with new line */
+            strcat(pos, current.line);
+            strcat(pos, '\n');
+            pos = buffer + strlen(buffer);
+
+            current = read_line(file);
         }
     }
     if (current.status == READ_ERROR)
+    {
+        free(buffer);
         return E_READ_ERROR;
+    }
+    if (current.status == READ_EOF)
+    {
+        part = strtok(current.line, WHITESPACES);
+        if ((part != NULL) && !strcmp(part, MACRO_DEF_END))
+        {
+            line_len = strlen(current.line);
+            buffer_len += line_len;
 
-    output->value = data;
+            /* checks if we need to resize the buffer */
+            if (buffer_size < buffer_len + 1)
+            {
+                buffer_size += MAX_LINE_LENGTH;
+                temp = realloc(buffer, buffer_size);
+                if (temp == NULL)
+                {
+                    free(buffer);
+                    return E_MEMORY_NEEDED;
+                }
+                buffer = temp;
+                pos = buffer + strlen(buffer);
+            }
+
+            /* updates buffer with new line */
+            strcat(pos, current.line);
+            strcat(pos, '\n');
+            pos = buffer + strlen(buffer);
+
+            current = read_line(file);
+        }
+    }
+
+    buffer_len = strlen(buffer);
+    output->value = malloc(buffer_len + 1);
+    if (output->value == NULL)
+    {
+        free(buffer);
+        return E_MEMORY_NEEDED;
+    }
+    strcpy(output->value, buffer);
+
     add_macro_to_tree(tree, *output);
+    free(buffer);
+    return OK;
 }
 
 code expand_macros(FILE *input, FILE **output, macro_trie *output_macros)
@@ -62,7 +136,13 @@ code expand_macros(FILE *input, FILE **output, macro_trie *output_macros)
             fprintf(temp_file, current_macro->value);
         else if (strcmp(part, MACRO_DEF_START)) /* found a macro definition */
         {
-            if ((status = create_macro(input, current_macro, output_macros)) != OK) /* TODO */
+            if ((status = create_macro(input, current_macro, output_macros)) != OK)
+                return status;
+            /* 
+                removes the last newline char so that when I add one at the end of this repetition of the while loop, 
+                there won't be an extra empty line
+            */
+            fseek(temp_file, -1, SEEK_CUR);
         }
         else /* not a macro */
             fprintf(temp_file, current.line);

@@ -28,7 +28,8 @@
         "user_input.h": "c",
         "cstdio": "cpp",
         "macro_workshop.h": "c",
-        "file.h": "c"
+        "file.h": "c",
+        "macro.h": "c"
     },
     "cSpell.words": [
         "adjmat",

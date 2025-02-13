@@ -28,6 +28,9 @@ typedef enum
     E_MACRO_ILLEGAL_NAME,
     E_MACRO_DEF_EXCESS,
 
+        /* memory */
+    E_MEMORY_NEEDED,
+
         /* reader */
     E_READ_ERROR
 } code;
