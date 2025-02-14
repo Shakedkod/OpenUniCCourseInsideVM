@@ -5,6 +5,6 @@
 #include "coms.h"
 #include "types/macro.h"
 
-code expand_macros(FILE *input, FILE **output, macro_trie *output_macros);
+code expand_macros(FILE *input, FILE **output, macro_node *output_macros);
 
 #endif

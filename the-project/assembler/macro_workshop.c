@@ -3,11 +3,12 @@
 #include "macro_workshop.h"
 #include "types/file.h"
 
-code create_macro(FILE *file, macro *output, macro_trie *tree)
+code create_macro(FILE *file, macro *output, macro_node *tree)
 {
     char *part, *buffer, *pos, *temp;
     line_read current;
     size_t buffer_len = 0, buffer_size = 0, line_len = 0;
+    code status = OK;
 
     /* name */
     part = strtok(NULL, WHITESPACES);
@@ -15,10 +16,8 @@ code create_macro(FILE *file, macro *output, macro_trie *tree)
         return E_MACRO_UNNAMED;
     if (command_exists(part))
         return E_MACRO_COMMAND_NAME;
-    if (!is_name_allowed(part))
-        return E_MACRO_ILLEGAL_NAME;
-    if (get_macro_for_name(*tree, part) != NULL)
-        return E_MACRO_ALREADY_DEFINED;
+    if ((status = is_name_allowed(part)) != OK)
+        return status;
     output->name = part;
     
     part = strtok(NULL, WHITESPACES);
@@ -115,7 +114,7 @@ code create_macro(FILE *file, macro *output, macro_trie *tree)
     return OK;
 }
 
-code expand_macros(FILE *input, FILE **output, macro_trie *output_macros)
+code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
 {
     FILE *temp_file = tmpfile();
     int lines = num_of_lines(input), i;

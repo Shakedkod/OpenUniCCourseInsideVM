@@ -2,14 +2,12 @@
 #define COMMAND_H
 #include "../coms.h"
 
-#define ALLOWED_COMMAND_LETTERS 26
-
-typedef struct command_trie *command_ptr;
+typedef struct command_node *command_ptr;
 typedef struct
 {
-    command_ptr children[ALLOWED_COMMAND_LETTERS];
+    command_ptr children[NUMBER_OF_ALPHABETIC_LETTERS];
     void *data; /* REPLACE WITH REAL DATA */
-} command_trie;
+} command_node;
 
 boolean command_exists(const char *name);
 
