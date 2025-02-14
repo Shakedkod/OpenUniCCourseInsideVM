@@ -61,3 +61,8 @@ boolean is_all_whitespaces(const char *str)
 
     return TRUE;
 }
+
+code get_file(char *name, FILE **output)
+{
+    return OK;
+}

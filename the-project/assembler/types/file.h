@@ -35,4 +35,6 @@ line_read read_line(FILE *file);
 */
 boolean is_all_whitespaces(const char *str);
 
+code get_file(char *name);
+
 #endif
