@@ -2,6 +2,7 @@
 
 #include "macro_workshop.h"
 #include "types/file.h"
+#include "types/command.h"
 
 code create_macro(FILE *file, macro *output, macro_node *tree)
 {

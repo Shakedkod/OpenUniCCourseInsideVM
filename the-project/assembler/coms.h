@@ -4,6 +4,9 @@
 #define NUMBER_OF_ALPHABETIC_LETTERS 26
 #define NUMBER_OF_ALLOWED_NUMBERS 10
 
+#define GET_ARRAY_LENGTH(array) (sizeof(array) / sizeof(array[0]))
+#define GET_LETTER_INDEX(c) (c - 'a')
+
 typedef enum
 {
     FALSE,
