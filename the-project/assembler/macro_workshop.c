@@ -17,6 +17,8 @@ code create_macro(FILE *file, macro *output, macro_trie *tree)
         return E_MACRO_COMMAND_NAME;
     if (!is_name_allowed(part))
         return E_MACRO_ILLEGAL_NAME;
+    if (get_macro_for_name(*tree, part) != NULL)
+        return E_MACRO_ALREADY_DEFINED;
     output->name = part;
     
     part = strtok(NULL, WHITESPACES);

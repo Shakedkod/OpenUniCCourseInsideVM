@@ -27,6 +27,7 @@ typedef enum
     E_MACRO_COMMAND_NAME,
     E_MACRO_ILLEGAL_NAME,
     E_MACRO_DEF_EXCESS,
+    E_MACRO_ALREADY_DEFINED,
 
         /* memory */
     E_MEMORY_NEEDED,
@@ -34,5 +35,13 @@ typedef enum
         /* reader */
     E_READ_ERROR
 } code;
+
+/* TODO */
+typedef struct
+{
+    code status;
+    char *data;
+    int line;
+} state;
 
 #endif
