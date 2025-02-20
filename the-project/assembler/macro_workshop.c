@@ -17,7 +17,7 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
         return E_MACRO_UNNAMED;
     if (command_exists(part))
         return E_MACRO_COMMAND_NAME;
-    if ((status = is_name_allowed(part)) != OK)
+    if ((status = is_name_allowed(part, *tree)) != OK)
         return status;
     output->name = part;
     

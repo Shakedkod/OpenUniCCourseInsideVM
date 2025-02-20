@@ -16,7 +16,7 @@ typedef struct
     char *value;
 } macro;
 
-code is_name_allowed(const char *name);
+code is_name_allowed(const char *name, const macro_node head);
 boolean equals(macro a, macro b);
 
 /* MACRO TRIE */
