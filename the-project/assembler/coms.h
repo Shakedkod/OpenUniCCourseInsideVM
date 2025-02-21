@@ -40,30 +40,14 @@ typedef enum
     E_READ_ERROR
 } code;
 
-struct code_to_message
-{
-    code status;
-    const char *msg;
-    /* ADD THE %S %D SHIT HERE*/
-} messages[] = {
-    /* WARNING */
-        /* reader */
-    {W_LINE_TOO_LONG, "Line %d is too long."},
-
-    /* ERROR */
-        /* macro related */
-    {E_MACRO_UNNAMED, "The macro defined in line %d needs a name."},
-    {E_MACRO_EXCESS, "In line %d at the call of macro '%s', there is excess characters after the name."},
-    {E_MACRO_COMMAND_NAME, "In line %d the macro name '%s' is a command name, and thus not allowed."},
-    {E_MACRO_DEF_EXCESS, "In line %d at the definiton of macro '%s', there is excess characters after the name."},
-    {E_MACRO_ALREADY_DEFINED, "The macro %s, defined in line %d, is already defined"}
-};
-
 typedef struct
 {
     code status;
-    char *line;
+    char *data;
     int line_num;
 } state;
+
+void print_warning(code warning, int line, char *data);
+void print_error(code error, int line, char *data);
 
 #endif

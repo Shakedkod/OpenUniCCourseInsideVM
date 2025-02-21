@@ -124,11 +124,17 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
     char *part;
     code status = OK;
 
+    if (!temp_file)
+        return E_MEMORY_NEEDED;
+
     for (i = 0; i < lines; i++)
     {
         current = read_line(input);
         if (current.status == READ_ERROR)
+        {
+            fclose(temp_file);
             return E_READ_ERROR;
+        }
         
         /* check the first part of the line*/
         part = strtok(current.line, WHITESPACES);
@@ -136,10 +142,14 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
             fprintf(temp_file, current.line);
         else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
             fprintf(temp_file, current_macro->value);
-        else if (strcmp(part, MACRO_DEF_START)) /* found a macro definition */
+        else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
         {
             if ((status = create_macro(input, current_macro, output_macros)) != OK)
+            {
+                fclose(temp_file);
+                free(current.line);
                 return status;
+            }
             /* 
                 removes the last newline char so that when I add one at the end of this repetition of the while loop, 
                 there won't be an extra empty line
@@ -151,7 +161,12 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
         
         /* moves the temp_file to the next line */
         fprintf(temp_file, "\n");
+        free(current.line);
     }
-    
+
+    if (status == OK)
+        *output = temp_file;
+    else
+        fclose(temp_file);
     return status;
 }
