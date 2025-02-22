@@ -1,3 +1,6 @@
+#include <string.h>
+#include <ctype.h>
+
 #include "file.h"
 
 int num_of_lines(FILE *file)
@@ -62,7 +65,69 @@ boolean is_all_whitespaces(const char *str)
     return TRUE;
 }
 
-code get_file(char *name, FILE **output)
+char *get_extention_for_type(file_type type)
 {
+    switch (type)
+    {
+    case FILE_AS:
+        return ".as";
+    case FILE_AM:
+        return ".am";
+    case FILE_ENT:
+        return ".ent";
+    case FILE_EXT:
+        return ".ext";
+    case FILE_OB:
+        return ".ob";
+    
+    default:
+        return NULL;
+    }
+}
+
+code get_file(char *path, FILE **output, file_type type)
+{
+    return OK;
+}
+
+code save_file(FILE *file, const char *output_path, file_type format) 
+{
+    FILE *final_output;
+    char buffer[MAX_LINE_LENGTH + 50];
+
+    if (!file)
+        return E_SYSTEM_UNUSABLE_TEMP_FILE;
+    if (!output_path)
+        return E_FILE_INVALID_PATH;
+
+    /* Open file */
+    final_output = fopen(
+        output_path, (format == FILE_OB) 
+            ? "wb" 
+            : "w"
+    );
+    if (!final_output)
+        return E_FILE_INVALID_PATH;
+
+    /* starting from the start of the file */
+    rewind(file);
+
+    if (format == FILE_OB) /* write binary file */
+    {
+        /* ??? */
+    }
+    else /* write normal text files */
+    {
+        while (fgets(buffer, sizeof(buffer), file)) 
+        {
+            if (fputs(buffer, final_output) == EOF) 
+            {
+                fclose(final_output);
+                return E_WRITE_ERROR;
+            }
+        }
+    }
+
+    fclose(final_output);
     return OK;
 }

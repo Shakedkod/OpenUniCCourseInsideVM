@@ -16,7 +16,6 @@ typedef struct
     char *value;
 } macro;
 
-code is_name_allowed(const char *name, const macro_node head);
 boolean equals(macro a, macro b);
 
 /* MACRO TRIE */
@@ -27,8 +26,8 @@ typedef struct
     macro *data;
 } macro_node;
 
-macro_node init_macro_node();
 void add_macro_to_tree(macro_node *head, macro node);
 macro *get_macro_for_name(macro_node head, const char *name);
+code is_name_allowed(const char *name, const macro_node head);
 
 #endif

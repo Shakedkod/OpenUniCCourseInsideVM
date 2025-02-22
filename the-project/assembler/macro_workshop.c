@@ -59,7 +59,7 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
 
             /* updates buffer with new line */
             strcat(pos, current.line);
-            strcat(pos, '\n');
+            strcat(pos, "\n");
             pos = buffer + strlen(buffer);
 
             current = read_line(file);
@@ -94,7 +94,7 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
 
             /* updates buffer with new line */
             strcat(pos, current.line);
-            strcat(pos, '\n');
+            strcat(pos, "\n");
             pos = buffer + strlen(buffer);
 
             current = read_line(file);
@@ -139,15 +139,14 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
         /* check the first part of the line*/
         part = strtok(current.line, WHITESPACES);
         if (!part) /* the line is only WHITESPACES */
-            fprintf(temp_file, current.line);
+            fputs(current.line, temp_file);
         else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
-            fprintf(temp_file, current_macro->value);
+            fputs(current_macro->value, temp_file);
         else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
         {
             if ((status = create_macro(input, current_macro, output_macros)) != OK)
             {
                 fclose(temp_file);
-                free(current.line);
                 return status;
             }
             /* 
@@ -157,11 +156,10 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
             fseek(temp_file, -1, SEEK_CUR);
         }
         else /* not a macro */
-            fprintf(temp_file, current.line);
+            fputs(current.line, temp_file);
         
         /* moves the temp_file to the next line */
         fprintf(temp_file, "\n");
-        free(current.line);
     }
 
     if (status == OK)

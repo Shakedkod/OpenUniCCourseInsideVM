@@ -2,6 +2,12 @@
 
 #include "coms.h"
 
+state get_new_state()
+{
+    state output = DEFAULT_STATE;
+    return output;
+}
+
 typedef enum 
 {
     PATTERN_D,
@@ -39,9 +45,9 @@ struct code_to_message
     {E_READ_ERROR, "There was a reading error at line %d.", PATTERN_D}
 };
 
-void print_pattern(code warning, int line, char *data)
+void print_pattern(code warning, int line, char *data, boolean is_error)
 {
-    char *msg;
+    const char *msg;
     format_pattern patt;
     int i;
     boolean found = FALSE;
@@ -58,43 +64,75 @@ void print_pattern(code warning, int line, char *data)
 
     if (!found)
     {
-        printf("Unknown.\n");
+        if (is_error)
+            fprintf(stderr, "Unknown.\n");
+        else
+            printf("Unknown.\n");
         return;
     }
 
-    switch (patt)
+    if (is_error)
     {
-    case PATTERN_D:
-        printf(msg, line);
-        break;
-    case PATTERN_S:
-        printf(msg, data);
-        break;
-    case PATTERN_D_S:
-        printf(msg, line, data);
-        break;
-    case PATTERN_S_D:
-        printf(msg, data, line);
-        break;
-    case PATTERN_NONE:
-        printf(msg);
-        break;
-    
-    default:
-        printf("Unknown.");
-        break;
+        switch (patt)
+        {
+        case PATTERN_D:
+            fprintf(stderr, msg, line);
+            break;
+        case PATTERN_S:
+            fprintf(stderr, msg, data);
+            break;
+        case PATTERN_D_S:
+            fprintf(stderr, msg, line, data);
+            break;
+        case PATTERN_S_D:
+            fprintf(stderr, msg, data, line);
+            break;
+        case PATTERN_NONE:
+            fputs(msg, stderr);
+            break;
+        
+        default:
+            fprintf(stderr, "Unknown.");
+            break;
+        }
+        fprintf(stderr, "\n");
     }
-    printf("\n");
+    else
+    {
+        switch (patt)
+        {
+        case PATTERN_D:
+            printf(msg, line);
+            break;
+        case PATTERN_S:
+            printf(msg, data);
+            break;
+        case PATTERN_D_S:
+            printf(msg, line, data);
+            break;
+        case PATTERN_S_D:
+            printf(msg, data, line);
+            break;
+        case PATTERN_NONE:
+            fputs(msg, stdout);
+            break;
+        
+        default:
+            printf("Unknown.");
+            break;
+        }
+        printf("\n");
+    }
 }
 
 void print_warning(code warning, int line, char *data)
 {
     printf("WARNING: ");
-    print_pattern(warning, line, data);
+    print_pattern(warning, line, data, FALSE);
 }
 
 void print_error(code error, int line, char *data)
 {
-    printf("ERROR: ");
-    print_pattern(error, line, data);
+    fprintf(stderr, "ERROR: ");
+    print_pattern(error, line, data, TRUE);
 }

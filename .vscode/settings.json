@@ -29,7 +29,8 @@
         "cstdio": "cpp",
         "macro_workshop.h": "c",
         "file.h": "c",
-        "macro.h": "c"
+        "macro.h": "c",
+        "command.h": "c"
     },
     "cSpell.words": [
         "adjmat",

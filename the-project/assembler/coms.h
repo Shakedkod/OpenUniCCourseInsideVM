@@ -4,6 +4,8 @@
 #define NUMBER_OF_ALPHABETIC_LETTERS 26
 #define NUMBER_OF_ALLOWED_NUMBERS 10
 
+#define DEFAULT_STATE {OK, "\0", 1}
+
 #define GET_ARRAY_LENGTH(array) (sizeof(array) / sizeof(array[0]))
 #define GET_LETTER_INDEX(c) (c - 'a')
 
@@ -36,8 +38,15 @@ typedef enum
         /* memory */
     E_MEMORY_NEEDED,
 
+        /* files */
+    E_FILE_INVALID_PATH,
+
         /* reader */
-    E_READ_ERROR
+    E_READ_ERROR,
+    E_WRITE_ERROR,
+
+        /* system */
+    E_SYSTEM_UNUSABLE_TEMP_FILE
 } code;
 
 typedef struct
@@ -46,6 +55,8 @@ typedef struct
     char *data;
     int line_num;
 } state;
+
+state get_new_state();
 
 void print_warning(code warning, int line, char *data);
 void print_error(code error, int line, char *data);

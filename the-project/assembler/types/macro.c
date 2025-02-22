@@ -40,7 +40,7 @@ boolean equals(macro a, macro b)
 
 macro_node *init_macro_node()
 {
-    macro_node result = {NULL, {NULL}};
+    macro_node result = {{NULL}, NULL};
     return &result;
 }
 
