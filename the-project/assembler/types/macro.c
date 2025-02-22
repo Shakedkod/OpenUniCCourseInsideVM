@@ -40,8 +40,17 @@ boolean equals(macro a, macro b)
 
 macro_node *init_macro_node()
 {
-    macro_node result = {{NULL}, NULL};
-    return &result;
+    int i;
+
+    macro_node *result = malloc(sizeof(macro_node));
+    result->data = NULL;
+
+    for (i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+    {
+        result->children[i] = NULL;
+    }
+
+    return result;
 }
 
 int get_index_of_char_in_child_array(char c)

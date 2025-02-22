@@ -19,8 +19,8 @@ typedef struct
 boolean equals(macro a, macro b);
 
 /* MACRO TRIE */
-typedef struct macro_node *macro_node_ptr;
-typedef struct
+typedef struct macro_node_s *macro_node_ptr;
+typedef struct macro_node_s
 {
     macro_node_ptr children[NUM_OF_ALLOWED_CHARACTERS];
     macro *data;
