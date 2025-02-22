@@ -2,10 +2,15 @@
 
 #include "coms.h"
 
-state get_new_state()
+#define DEFAULT_STATE_DATA "\0"
+#define DEFAULT_STATE_LINE_NUM 1
+#define DEFAULT_STATE_STATUS OK
+
+void zerosize_state(state *status)
 {
-    state output = DEFAULT_STATE;
-    return output;
+    status->data = DEFAULT_STATE_DATA;
+    status->line_num = DEFAULT_STATE_LINE_NUM;
+    status->status = DEFAULT_STATE_STATUS;
 }
 
 typedef enum 
