@@ -105,3 +105,52 @@ macro *get_macro_for_name(macro_node head, const char *name)
 
     return current->data;
 }
+
+void delete_tree(macro_node *head)
+{
+    if (head == NULL)
+        return;
+    
+    /* Free all children first */
+    for (int i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+    {
+        if (head->children[i] != NULL)
+        {
+            delete_node(head->children[i]);
+            head->children[i] = NULL;
+        }
+    }
+    
+    /* Free the macro data if it exists */
+    if (head->data != NULL)
+    {
+        free(head->data->name);
+        free(head->data->value);
+        free(head->data);
+        head->data = NULL;
+    }
+    
+    /* Free the node itself */
+    free(head);
+}
+
+void zeroize_macro_tree(macro_node *head)
+{
+    int i;
+
+    /* Free children */
+    for (i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+    {
+        delete_tree(head->children[i]);
+        head->children[i] = NULL;
+    }
+
+    /* Free the macro */
+    if (head->data != NULL)
+    {
+        free(head->data->name);
+        free(head->data->value);
+        free(head->data);
+        head->data = NULL;
+    }
+}

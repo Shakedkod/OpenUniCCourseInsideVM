@@ -6,7 +6,7 @@
 #define DEFAULT_STATE_LINE_NUM 1
 #define DEFAULT_STATE_STATUS OK
 
-void zerosize_state(state *status)
+void zeroize_state(state *status)
 {
     status->data = DEFAULT_STATE_DATA;
     status->line_num = DEFAULT_STATE_LINE_NUM;

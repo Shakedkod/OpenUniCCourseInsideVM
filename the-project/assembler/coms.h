@@ -56,7 +56,7 @@ typedef struct
     int line_num;
 } state;
 
-void zerosize_state(state *status);
+void zeroize_state(state *status);
 
 void print_warning(code warning, int line, char *data);
 void print_error(code error, int line, char *data);

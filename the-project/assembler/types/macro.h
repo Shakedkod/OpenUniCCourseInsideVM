@@ -8,6 +8,7 @@
 #define NUM_OF_ALLOWED_CHARACTERS ((2 * NUMBER_OF_ALPHABETIC_LETTERS) + NUMBER_OF_ALLOWED_NUMBERS + 1) 
 #define MACRO_DEF_START "macro"
 #define MACRO_DEF_END "macroend"
+#define DEFAULT_MACRO_NODE {{NULL}, NULL}
 
 /* MACRO TYPE */
 typedef struct
@@ -29,5 +30,7 @@ typedef struct macro_node_s
 void add_macro_to_tree(macro_node *head, macro node);
 macro *get_macro_for_name(macro_node head, const char *name);
 code is_name_allowed(const char *name, const macro_node head);
+void delete_tree(macro_node *head);
+void zeroize_macro_tree(macro_node *head);
 
 #endif

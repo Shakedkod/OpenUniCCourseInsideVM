@@ -38,6 +38,7 @@
         "macroend",
         "mult",
         "mycomp",
-        "timediff"
+        "timediff",
+        "zeroize"
     ]
 }
