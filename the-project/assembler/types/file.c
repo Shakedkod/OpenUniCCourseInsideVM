@@ -1,5 +1,6 @@
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "file.h"
 
@@ -87,6 +88,37 @@ char *get_extention_for_type(file_type type)
 
 code get_file(char *path, FILE **output, file_type type)
 {
+    char *filename = malloc(sizeof(char) * (strlen(path) + 4));
+    if (filename == NULL)
+        return E_MEMORY_NEEDED;
+    
+    strcpy(filename, path);
+
+    switch (type)
+    {
+    case FILE_AS:
+        strcat(filename, ".as");
+        break;
+    case FILE_AM:
+        strcat(filename, ".am");
+        break;
+    case FILE_ENT:
+        strcat(filename, ".ent");
+        break;
+    case FILE_EXT:
+        strcat(filename, ".ext");
+        break;
+    case FILE_OB:
+        strcat(filename, ".ob");
+        break;
+    
+    default:
+        free(filename);
+        return E_FILE_UNRECOGNIZED_FILE_TYPE;
+    }
+
+    (*output) = fopen(filename, "r");
+    free(filename);
     return OK;
 }
 

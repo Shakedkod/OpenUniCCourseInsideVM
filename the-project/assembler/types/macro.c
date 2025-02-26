@@ -5,11 +5,16 @@
 
 macro *get_macro_for_name(macro_node head, const char *name);
 
-code is_name_allowed(const char *name, const macro_node head)
+state is_name_allowed(const char *name, const macro_node head, int line)
 {
     int i = 0, check;
+    state status = {OK, "", line};
+
     if (isdigit(name[0]))
-        return E_MACRO_NAME_STARTS_WITH_DIGIT;
+    {
+        status.status = E_MACRO_NAME_STARTS_WITH_DIGIT;
+        return status;
+    }
     
     for (i = 0; i < strlen(name); i++)
     {
@@ -22,15 +27,22 @@ code is_name_allowed(const char *name, const macro_node head)
                 check = name[i] - 'a';
                 if (check < 0 || check > (NUMBER_OF_ALPHABETIC_LETTERS - 1))
                     if (name[i] != '_')
-                        return E_MACRO_NAME_ILLEGAL_CHARACTER;
+                    {
+                        status.status = E_MACRO_NAME_ILLEGAL_CHARACTER;
+                        status.data = name[i];
+                    }
             }
         }
     }
 
     if (get_macro_for_name(head, name) != NULL)
-        return E_MACRO_ALREADY_DEFINED;
+    {
+        status.status = E_MACRO_ALREADY_DEFINED;
+        status.data = name;
+        return status;
+    }
     
-    return OK;
+    return status;
 }
 
 boolean equals(macro a, macro b)
@@ -71,7 +83,9 @@ void add_macro_to_tree(macro_node *head, macro node)
 
     if (length == 0)
     {
-        head->data = &node;
+        head->data = malloc(sizeof(macro));
+        head->data->name = node.name;
+        head->data->value = node.value;
         return;
     }
 
@@ -87,7 +101,9 @@ void add_macro_to_tree(macro_node *head, macro node)
     }
 
     /* putting the macro inside the tree */
-    current->data = &node;
+    current->data = malloc(sizeof(macro));
+    current->data->name = node.name;
+    current->data->value = node.value;
 }
 
 macro *get_macro_for_name(macro_node head, const char *name)
@@ -108,15 +124,17 @@ macro *get_macro_for_name(macro_node head, const char *name)
 
 void delete_tree(macro_node *head)
 {
+    int i;
+
     if (head == NULL)
         return;
     
     /* Free all children first */
-    for (int i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+    for (i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
     {
         if (head->children[i] != NULL)
         {
-            delete_node(head->children[i]);
+            delete_tree(head->children[i]);
             head->children[i] = NULL;
         }
     }

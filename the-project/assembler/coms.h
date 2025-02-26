@@ -40,6 +40,7 @@ typedef enum
 
         /* files */
     E_FILE_INVALID_PATH,
+    E_FILE_UNRECOGNIZED_FILE_TYPE,
 
         /* reader */
     E_READ_ERROR,

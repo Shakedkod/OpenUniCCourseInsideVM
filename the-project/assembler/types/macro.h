@@ -29,7 +29,7 @@ typedef struct macro_node_s
 
 void add_macro_to_tree(macro_node *head, macro node);
 macro *get_macro_for_name(macro_node head, const char *name);
-code is_name_allowed(const char *name, const macro_node head);
+state is_name_allowed(const char *name, const macro_node head, int line);
 void delete_tree(macro_node *head);
 void zeroize_macro_tree(macro_node *head);
 

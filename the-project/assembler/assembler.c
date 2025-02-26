@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "coms.h"
 #include "macro_workshop.h"
 #include "types/file.h"
 #include "types/macro.h"
@@ -18,7 +19,13 @@ int main(int argc, char *argv[])
         zeroize_macro_tree(&macros);
 
         /* open file */
-        
+        status.status = get_file(argv[i], &as_file, FILE_AS);
+        if (status.status == OK)
+        {
+            status = expand_macros(as_file, &am_file, &macros);
+        }
+        else
+            print_error(status.status, 0, argv[i]);
     }
 
     zeroize_macro_tree(&macros); /* we don't need to free the head, because it's not dynamically allocated. */

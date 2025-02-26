@@ -45,6 +45,10 @@ struct code_to_message
     
         /* memory */
     {E_MEMORY_NEEDED, "There isn't enough memory to assemble the program you entered. reached memory capacity at line %d.", PATTERN_D},
+
+        /* file */
+    {E_FILE_INVALID_PATH, "The file path you provided(%s) is invalid: the path doesn't exists, or the file doesn't exist.", PATTERN_S},
+    {E_FILE_UNRECOGNIZED_FILE_TYPE, "Unrecognized file type. the only allowed file type is *.as, enter it without the '.as'.", PATTERN_NONE},
     
         /* reader */
     {E_READ_ERROR, "There was a reading error at line %d.", PATTERN_D}

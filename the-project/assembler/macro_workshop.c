@@ -4,33 +4,48 @@
 #include "types/file.h"
 #include "types/command.h"
 
-code create_macro(FILE *file, macro *output, macro_node *tree)
+state create_macro(FILE *file, macro *output, macro_node *tree, int current_line)
 {
     char *part, *buffer, *pos, *temp;
     line_read current;
     size_t buffer_len = 0, buffer_size = 0, line_len = 0;
-    code status = OK;
+    state status = {OK, "", current_line};
 
     /* name */
     part = strtok(NULL, WHITESPACES);
     if (part == NULL)
-        return E_MACRO_UNNAMED;
+    {
+        status.status = E_MACRO_UNNAMED;
+        return status;
+    }
     if (command_exists(part))
-        return E_MACRO_COMMAND_NAME;
-    if ((status = is_name_allowed(part, *tree)) != OK)
+    {
+        status.status = E_MACRO_COMMAND_NAME;
+        status.data = part;
+        return status;
+    }
+    if ((status = is_name_allowed(part, *tree, current_line)).status != OK)
         return status;
     output->name = part;
+    status.data = output->name;
     
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
-        return E_MACRO_DEF_EXCESS;
+    {
+        status.status = E_MACRO_DEF_EXCESS;
+        return status;
+    }
     
     /* value */
+    status.line_num++;
     current = read_line(file);
     buffer_size = MAX_LINE_LENGTH * sizeof(char);
     buffer = malloc(buffer_size);
     if (buffer == NULL)
-        return E_MEMORY_NEEDED;
+    {
+        status.status = E_MEMORY_NEEDED;
+        return status;
+    }
 
     pos = buffer;
     *pos = '\0';
@@ -51,7 +66,8 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
                 if (temp == NULL)
                 {
                     free(buffer);
-                    return E_MEMORY_NEEDED;
+                    status.status = E_MEMORY_NEEDED;
+                    return status;
                 }
                 buffer = temp;
                 pos = buffer + strlen(buffer);
@@ -63,12 +79,14 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
             pos = buffer + strlen(buffer);
 
             current = read_line(file);
+            status.line_num++;
         }
     }
     if (current.status == READ_ERROR)
     {
         free(buffer);
-        return E_READ_ERROR;
+        status.status = E_READ_ERROR;
+        return status;
     }
     if (current.status == READ_EOF)
     {
@@ -86,7 +104,8 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
                 if (temp == NULL)
                 {
                     free(buffer);
-                    return E_MEMORY_NEEDED;
+                    status.status = E_MEMORY_NEEDED;
+                    return status;
                 }
                 buffer = temp;
                 pos = buffer + strlen(buffer);
@@ -98,6 +117,7 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
             pos = buffer + strlen(buffer);
 
             current = read_line(file);
+            status.line_num++;
         }
     }
 
@@ -106,34 +126,40 @@ code create_macro(FILE *file, macro *output, macro_node *tree)
     if (output->value == NULL)
     {
         free(buffer);
-        return E_MEMORY_NEEDED;
+        status.status = E_MEMORY_NEEDED;
+        return status;
     }
     strcpy(output->value, buffer);
 
     add_macro_to_tree(tree, *output);
     free(buffer);
-    return OK;
+    return status;
 }
 
-code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
+state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
 {
     FILE *temp_file = tmpfile();
     int lines = num_of_lines(input), i;
     line_read current;
     macro *current_macro = NULL;
     char *part;
-    code status = OK;
+    state status = {OK, "", 0};
 
     if (!temp_file)
-        return E_MEMORY_NEEDED;
+    {
+        status.status = E_MEMORY_NEEDED;
+        return status;
+    }
 
     for (i = 0; i < lines; i++)
     {
+        status.line_num = i;
         current = read_line(input);
         if (current.status == READ_ERROR)
         {
             fclose(temp_file);
-            return E_READ_ERROR;
+            status.status = E_READ_ERROR;
+            return status;
         }
         
         /* check the first part of the line*/
@@ -144,11 +170,12 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
             fputs(current_macro->value, temp_file);
         else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
         {
-            if ((status = create_macro(input, current_macro, output_macros)) != OK)
+            if ((status = create_macro(input, current_macro, output_macros, i)).status != OK)
             {
                 fclose(temp_file);
                 return status;
             }
+            i = status.line_num; /* forwarding i past the macro */
             /* 
                 removes the last newline char so that when I add one at the end of this repetition of the while loop, 
                 there won't be an extra empty line
@@ -162,7 +189,7 @@ code expand_macros(FILE *input, FILE **output, macro_node *output_macros)
         fprintf(temp_file, "\n");
     }
 
-    if (status == OK)
+    if (status.status == OK)
         *output = temp_file;
     else
         fclose(temp_file);
