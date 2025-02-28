@@ -8,7 +8,8 @@ macro *get_macro_for_name(macro_node head, const char *name);
 state is_name_allowed(const char *name, const macro_node head, int line)
 {
     int i = 0, check;
-    state status = {OK, "", line};
+    state status = {OK, "", 0};
+    status.line_num = line;
 
     if (isdigit(name[0]))
     {
@@ -30,6 +31,7 @@ state is_name_allowed(const char *name, const macro_node head, int line)
                     {
                         status.status = E_MACRO_NAME_ILLEGAL_CHARACTER;
                         status.data = name[i];
+                        return status;
                     }
             }
         }
