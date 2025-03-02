@@ -60,6 +60,8 @@ typedef struct
 void zeroize_state(state *status);
 
 void print_warning(code warning, int line, char *data);
+void print_warning(state status);
 void print_error(code error, int line, char *data);
+void print_error(state status);
 
 #endif

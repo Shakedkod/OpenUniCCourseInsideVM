@@ -140,8 +140,20 @@ void print_warning(code warning, int line, char *data)
     print_pattern(warning, line, data, FALSE);
 }
 
+void print_warning(state status)
+{
+    printf("WARNING: ");
+    print_pattern(status.status, status.line_num, status.data, FALSE);
+}
+
 void print_error(code error, int line, char *data)
 {
     fprintf(stderr, "ERROR: ");
     print_pattern(error, line, data, TRUE);
+}
+
+void print_error(state status)
+{
+    fprintf(stderr, "ERROR: ");
+    print_pattern(status.status, status.line_num, status.data, TRUE);
 }

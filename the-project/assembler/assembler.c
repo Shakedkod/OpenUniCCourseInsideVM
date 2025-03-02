@@ -23,6 +23,12 @@ int main(int argc, char *argv[])
         if (status.status == OK)
         {
             status = expand_macros(as_file, &am_file, &macros);
+            if (status.status == OK)
+            {
+                
+            }
+            else
+                print_error(status.status, 0, argv[i]);
         }
         else
             print_error(status.status, 0, argv[i]);
