@@ -116,11 +116,15 @@ macro *get_macro_for_name(macro_node head, const char *name)
     for (; i < len; i++)
     {
         if (current == NULL)
+        {
             return NULL;
-        
+        }
+
         current = current->children[get_index_of_char_in_child_array(name[i])];
     }
 
+    if (current == NULL || current->data == NULL)
+        return NULL;
     return current->data;
 }
 

@@ -49,9 +49,14 @@ struct code_to_message
         /* file */
     {E_FILE_INVALID_PATH, "The file path you provided(%s) is invalid: the path doesn't exists, or the file doesn't exist.", PATTERN_S},
     {E_FILE_UNRECOGNIZED_FILE_TYPE, "Unrecognized file type. the only allowed file type is *.as, enter it without the '.as'.", PATTERN_NONE},
+    {E_FILE_NO_FILE_ENTERED, "You need to enter an assembly file to be assembled.\nCorrect use:\n\tassembler <file path without extention> ...", PATTERN_NONE},
     
         /* reader */
-    {E_READ_ERROR, "There was a reading error at line %d.", PATTERN_D}
+    {E_READ_ERROR, "There was a reading error at line %d.", PATTERN_D},
+    {E_WRITE_ERROR, "There was a writing error at file %s.", PATTERN_S},
+
+        /* system */
+    {E_SYSTEM_UNUSABLE_TEMP_FILE, "There us an error with the temp file of %s. maybe the system is unable to read it.", PATTERN_S},
 };
 
 void print_pattern(code warning, int line, char *data, boolean is_error)
@@ -140,20 +145,8 @@ void print_warning(code warning, int line, char *data)
     print_pattern(warning, line, data, FALSE);
 }
 
-void print_warning(state status)
-{
-    printf("WARNING: ");
-    print_pattern(status.status, status.line_num, status.data, FALSE);
-}
-
 void print_error(code error, int line, char *data)
 {
     fprintf(stderr, "ERROR: ");
     print_pattern(error, line, data, TRUE);
-}
-
-void print_error(state status)
-{
-    fprintf(stderr, "ERROR: ");
-    print_pattern(status.status, status.line_num, status.data, TRUE);
 }

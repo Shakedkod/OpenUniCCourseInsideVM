@@ -2,12 +2,15 @@
 #define COMS_H
 
 #define NUMBER_OF_ALPHABETIC_LETTERS 26
-#define NUMBER_OF_ALLOWED_NUMBERS 10
+#define NUMBER_OF_ALLOWED_NUMBERS    10
 
 #define DEFAULT_STATE {OK, "\0", 1}
 
 #define GET_ARRAY_LENGTH(array) (sizeof(array) / sizeof(array[0]))
-#define GET_LETTER_INDEX(c) (c - 'a')
+#define GET_LETTER_INDEX(c)     (c - 'a')
+
+#define PRINT_WARNING(status) print_warning(status.status, status.line_num, status.data)
+#define PRINT_ERROR(status)   print_error(status.status, status.line_num, status.data)
 
 typedef enum
 {
@@ -41,6 +44,7 @@ typedef enum
         /* files */
     E_FILE_INVALID_PATH,
     E_FILE_UNRECOGNIZED_FILE_TYPE,
+    E_FILE_NO_FILE_ENTERED,
 
         /* reader */
     E_READ_ERROR,
@@ -60,8 +64,6 @@ typedef struct
 void zeroize_state(state *status);
 
 void print_warning(code warning, int line, char *data);
-void print_warning(state status);
 void print_error(code error, int line, char *data);
-void print_error(state status);
 
 #endif

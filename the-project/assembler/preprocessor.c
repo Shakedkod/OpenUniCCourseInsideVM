@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "macro_workshop.h"
+#include "preprocessor.h"
 #include "types/file.h"
 #include "types/command.h"
 
@@ -9,7 +9,9 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     char *part, *buffer, *pos, *temp;
     line_read current;
     size_t buffer_len = 0, buffer_size = 0, line_len = 0;
-    state status = {OK, "", current_line};
+    state status = {OK, "", 0};
+    status.line_num = current_line;
+    output = malloc(sizeof(macro_node));
 
     /* name */
     part = strtok(NULL, WHITESPACES);
@@ -24,9 +26,19 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
         status.data = part;
         return status;
     }
-    if ((status = is_name_allowed(part, *tree, current_line)).status != OK)
+
+    status = is_name_allowed(part, *tree, current_line);
+    if (status.status != OK)
         return status;
-    output->name = part;
+    
+    output->name = malloc(sizeof(part));
+    if (output->name == NULL)
+    {
+        status.status = E_MEMORY_NEEDED;
+        return status;
+    }
+
+    strcpy(output->name, part);
     status.data = output->name;
     
     part = strtok(NULL, WHITESPACES);
@@ -35,6 +47,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
         status.status = E_MACRO_DEF_EXCESS;
         return status;
     }
+    printf("DEBUG: what the hell is going on\n");
     
     /* value */
     status.line_num++;
@@ -50,10 +63,10 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     pos = buffer;
     *pos = '\0';
 
-    while (!(current.status == READ_ERROR || current.status == READ_EOF) && !strcmp(part, MACRO_DEF_END))
+    while (!(current.status == READ_ERROR || current.status == READ_EOF) && (part == NULL || strcmp(part, MACRO_DEF_END) != 0))
     {
         part = strtok(current.line, WHITESPACES);
-        if ((part != NULL) && !strcmp(part, MACRO_DEF_END))
+        if ((part != NULL) && strcmp(part, MACRO_DEF_END))
         {
             line_len = strlen(current.line);
             buffer_len += line_len;
@@ -142,8 +155,8 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
     int lines = num_of_lines(input), i;
     line_read current;
     macro *current_macro = NULL;
-    char *part;
-    state status = {OK, "", 0};
+    char *part, *dup_line;
+    state status = DEFAULT_STATE;
 
     if (!temp_file)
     {
@@ -151,6 +164,7 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
         return status;
     }
 
+    fseek(input, 0, SEEK_SET);
     for (i = 0; i < lines; i++)
     {
         status.line_num = i;
@@ -163,18 +177,33 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
         }
         
         /* check the first part of the line*/
+        dup_line = malloc(sizeof(current.line));
+        if (dup_line == NULL)
+        {
+            fclose(temp_file);
+            status.status = E_MEMORY_NEEDED;
+            return status;
+        }
+
+        strcpy(dup_line, current.line);
         part = strtok(current.line, WHITESPACES);
-        if (!part) /* the line is only WHITESPACES */
-            fputs(current.line, temp_file);
+
+        if (part == NULL) /* the line is only WHITESPACES */
+            fputs(dup_line, temp_file);
         else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
+        {
+            printf("DEBUG: Found and using macro '%s'\n", part);
             fputs(current_macro->value, temp_file);
+        }
         else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
         {
+            printf("DEBUG: Found macro definition starting with %s\n", part);
             if ((status = create_macro(input, current_macro, output_macros, i)).status != OK)
             {
                 fclose(temp_file);
                 return status;
             }
+            printf("DEBUG: Created macro '%s' with value '%s'\n", current_macro->name, current_macro->value);
             i = status.line_num; /* forwarding i past the macro */
             /* 
                 removes the last newline char so that when I add one at the end of this repetition of the while loop, 
@@ -183,10 +212,11 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
             fseek(temp_file, -1, SEEK_CUR);
         }
         else /* not a macro */
-            fputs(current.line, temp_file);
+            fputs(dup_line, temp_file);
         
         /* moves the temp_file to the next line */
         fprintf(temp_file, "\n");
+        free(dup_line);
     }
 
     if (status.status == OK)

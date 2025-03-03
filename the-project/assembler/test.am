@@ -1,0 +1,19 @@
+MAIN:
+LOOP:
+mcro
+cmp
+ bne
+mcroend
+ lea
+ inc
+ mov
+ sub
+ bne
+a_mc
+ dec
+ jmp
+END:
+STR:
+LIST:
+ .data
+K:

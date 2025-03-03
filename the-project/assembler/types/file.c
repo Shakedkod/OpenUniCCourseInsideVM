@@ -126,15 +126,42 @@ code save_file(FILE *file, const char *output_path, file_type format)
 {
     FILE *final_output;
     char buffer[MAX_LINE_LENGTH + 50];
+    char *filename = malloc(sizeof(char) * (strlen(output_path) + 4));
+    if (filename == NULL)
+        return E_MEMORY_NEEDED;
 
     if (!file)
         return E_SYSTEM_UNUSABLE_TEMP_FILE;
     if (!output_path)
         return E_FILE_INVALID_PATH;
+    
+    strcpy(filename, output_path);
+    switch (format)
+    {
+    case FILE_AS:
+        strcat(filename, ".as");
+        break;
+    case FILE_AM:
+        strcat(filename, ".am");
+        break;
+    case FILE_ENT:
+        strcat(filename, ".ent");
+        break;
+    case FILE_EXT:
+        strcat(filename, ".ext");
+        break;
+    case FILE_OB:
+        strcat(filename, ".ob");
+        break;
+    
+    default:
+        free(filename);
+        return E_FILE_UNRECOGNIZED_FILE_TYPE;
+    }
 
     /* Open file */
     final_output = fopen(
-        output_path, (format == FILE_OB) 
+        filename, (format == FILE_OB) 
             ? "wb" 
             : "w"
     );
@@ -155,11 +182,13 @@ code save_file(FILE *file, const char *output_path, file_type format)
             if (fputs(buffer, final_output) == EOF) 
             {
                 fclose(final_output);
+                free(filename);
                 return E_WRITE_ERROR;
             }
         }
     }
 
     fclose(final_output);
+    free(filename);
     return OK;
 }

@@ -30,12 +30,15 @@
         "macro_workshop.h": "c",
         "file.h": "c",
         "macro.h": "c",
-        "command.h": "c"
+        "command.h": "c",
+        "preprocessor.h": "c"
     },
     "cSpell.words": [
         "adjmat",
         "coms",
         "macroend",
+        "mcro",
+        "mcroend",
         "mult",
         "mycomp",
         "timediff",
