@@ -38,7 +38,9 @@ struct code_to_message
     {E_MACRO_EXCESS, "In line %d at the call of macro '%s', there is excess characters after the name.", PATTERN_D_S},
     {E_MACRO_COMMAND_NAME, "In line %d the macro name '%s' is a command name, and thus not allowed.", PATTERN_D_S},
     {E_MACRO_DEF_EXCESS, "In line %d at the definiton of macro '%s', there is excess characters after the name.", PATTERN_D_S},
+    {E_MACRO_DEF_END_EXCESS, "In line %d at the definiton of macro '%s', there is excess characters after mcroend.", PATTERN_D_S},
     {E_MACRO_ALREADY_DEFINED, "The macro %s, defined in line %d, is already defined.", PATTERN_S_D},
+    {E_MACRO_NOT_CLOSED, "The macro at the end of the file wasn't closed before EOF. please add a line with 'mcroend' at the end of it.", PATTERN_NONE},
             /* macro name related */
     {E_MACRO_NAME_STARTS_WITH_DIGIT, "The macro defined in line %d, has an illegal name - Macros can't start with a digit.", PATTERN_D},
     {E_MACRO_NAME_ILLEGAL_CHARACTER, "The macro defined in line %d, has an illegal name - Illegal character '%s'.", PATTERN_D_S},
