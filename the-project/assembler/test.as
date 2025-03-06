@@ -6,14 +6,17 @@ cmp K, #-6
 mcroend
  lea STR, r6
  inc r6
+ a_mc
  mov r3, K
  sub r1, r4
  bne END
+a_mc
 a_mc
  dec K
  jmp &LOOP
 END: stop
 STR: .string “abcd”
+a_mc
 LIST: .data 6, -9
  .data -100
 K: .data 31 
