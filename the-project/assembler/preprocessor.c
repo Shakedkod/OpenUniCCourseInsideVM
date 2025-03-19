@@ -4,7 +4,7 @@
 #include "types/file.h"
 #include "types/command.h"
 
-state create_macro(FILE *file, macro *output, macro_node *tree, int current_line)
+state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_line)
 {
     char *part, *buffer, *pos, *temp, line_copy[MAX_LINE_LENGTH + 2];
     line_read current;
@@ -13,6 +13,11 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     status.line_num = current_line;
     output = malloc(sizeof(macro_node));
 
+    if (output == NULL)
+    {
+        status.status = E_MEMORY_NEEDED;
+        return status;
+    }
     /* name */
     part = strtok(NULL, WHITESPACES);
     if (part == NULL)
@@ -23,7 +28,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     if (command_exists(part))
     {
         status.status = E_MACRO_COMMAND_NAME;
-        status.data = part;
+        strcpy(status.data, part);
         return status;
     }
 
@@ -31,15 +36,8 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     if (status.status != OK)
         return status;
     
-    output->name = malloc(sizeof(part));
-    if (output->name == NULL)
-    {
-        status.status = E_MEMORY_NEEDED;
-        return status;
-    }
-
     strcpy(output->name, part);
-    status.data = output->name;
+    strcpy(status.data, output->name);
     
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
@@ -58,12 +56,13 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
         status.status = E_MEMORY_NEEDED;
         return status;
     }
+    strcpy(buffer, "");
 
     pos = buffer;
 
     while (!(current.status == READ_ERROR || current.status == READ_EOF) && (part == NULL || strcmp(part, MACRO_DEF_END) != 0))
     {
-        memcpy(line_copy, current.line, sizeof(current.line));
+        strcpy(line_copy, current.line);
         part = strtok(current.line, WHITESPACES);
         if ((part != NULL) && strcmp(part, MACRO_DEF_END))
         {
@@ -122,24 +121,25 @@ state create_macro(FILE *file, macro *output, macro_node *tree, int current_line
     }
 
     buffer_len = strlen(buffer);
-    output->value = malloc(buffer_len + 1);
+    output->value = malloc(buffer_len);
     if (output->value == NULL)
     {
         free(buffer);
         status.status = E_MEMORY_NEEDED;
         return status;
     }
+    buffer[strlen(buffer) - 1] = '\0'; /* replacing the last '\n' */
     strcpy(output->value, buffer);
 
-    add_macro_to_tree(tree, *output);
+    add_macro_to_tree(tree, output);
     free(buffer);
     return status;
 }
 
-state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
+state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const char *file_output_name)
 {
     FILE *temp_file = tmpfile();
-    int lines = num_of_lines(input), i;
+    size_t lines = num_of_lines(input), i;
     line_read current;
     macro *current_macro = NULL;
     char *part, *dup_line;
@@ -203,8 +203,14 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros)
     }
 
     if (status.status == OK)
+    {
         *output = temp_file;
+
+        status = save_file(temp_file, file_output_name, FILE_AM);
+        fclose(temp_file);
+    }
     else
         fclose(temp_file);
+
     return status;
 }

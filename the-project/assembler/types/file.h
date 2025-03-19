@@ -4,7 +4,6 @@
 
 #include "../coms.h"
 
-#define MAX_LINE_LENGTH 80
 #define WHITESPACES " \t"
 
 /* LINES */
@@ -22,7 +21,7 @@ typedef struct
     read_status status;
 } line_read;
 
-int num_of_lines(FILE *file);
+size_t num_of_lines(FILE *file);
 line_read read_line(FILE *file);
 
 /*
@@ -47,7 +46,18 @@ typedef enum {
 
 char *get_extention_for_type(file_type type);
 
-code get_file(char *path, FILE **output, file_type type);
-code save_file(FILE *file, const char *output_path, file_type format);
+state get_file(char *path, FILE **output, file_type type);
+state save_file(FILE *file, const char *output_path, file_type format);
+
+typedef struct _ln *line_node_ptr;
+typedef struct _ln
+{
+    line_node_ptr next;
+    char line[MAX_LINE_LENGTH + 2];
+} line_node;
+
+line_node* init_line_node();
+void free_lines_list(line_node* head);
+line_node* file_to_nodes(FILE* input, const char* input_name);
 
 #endif

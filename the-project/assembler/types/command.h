@@ -11,12 +11,10 @@ typedef struct
     char *name;
     int opcode;
     int funct;
-    /* TODO */
+    state (*parse)(void *output, size_t line);
 } command;
 
 command *get_command(const char *name);
 boolean command_exists(const char *name);
-
-char *write_command(command cmd /*TODO: OPERATORS*/);
 
 #endif

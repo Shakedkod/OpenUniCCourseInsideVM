@@ -13,7 +13,7 @@
 /* MACRO TYPE */
 typedef struct
 {
-    char *name;
+    char name[MAX_LINE_LENGTH - 4]; /* MAX_LINE_LENGTH + 1 - 5(length of 'mcro ') */
     char *value;
 } macro;
 
@@ -27,9 +27,10 @@ typedef struct macro_node_s
     macro *data;
 } macro_node;
 
-void add_macro_to_tree(macro_node *head, macro node);
+void add_macro_to_tree(macro_node *head, macro *node);
 macro *get_macro_for_name(macro_node head, const char *name);
-state is_name_allowed(const char *name, const macro_node head, int line);
+state is_name_allowed(const char *name, const macro_node head, size_t line);
+macro *get_macro_for_name(macro_node head, const char *name);
 void delete_tree(macro_node *head);
 void zeroize_macro_tree(macro_node *head);
 

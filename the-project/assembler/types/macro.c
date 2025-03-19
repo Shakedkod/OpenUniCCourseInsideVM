@@ -5,9 +5,10 @@
 
 macro *get_macro_for_name(macro_node head, const char *name);
 
-state is_name_allowed(const char *name, const macro_node head, int line)
+state is_name_allowed(const char *name, const macro_node head, size_t line)
 {
-    int i = 0, check;
+    size_t i = 0;
+    int check;
     state status = {OK, "", 0};
     status.line_num = line;
 
@@ -30,7 +31,7 @@ state is_name_allowed(const char *name, const macro_node head, int line)
                     if (name[i] != '_')
                     {
                         status.status = E_MACRO_NAME_ILLEGAL_CHARACTER;
-                        status.data = name[i];
+                        status.data[0] = name[i]; status.data[1] = '\0';
                         return status;
                     }
             }
@@ -40,7 +41,7 @@ state is_name_allowed(const char *name, const macro_node head, int line)
     if (get_macro_for_name(head, name) != NULL)
     {
         status.status = E_MACRO_ALREADY_DEFINED;
-        status.data = name;
+        strcpy(status.data, name);
         return status;
     }
     
@@ -57,13 +58,15 @@ macro_node *init_macro_node()
     int i;
 
     macro_node *result = malloc(sizeof(macro_node));
-    result->data = NULL;
-
-    for (i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+    if (result != NULL)
     {
-        result->children[i] = NULL;
-    }
+        result->data = NULL;
 
+        for (i = 0; i < NUM_OF_ALLOWED_CHARACTERS; i++)
+        {
+            result->children[i] = NULL;
+        }
+    }
     return result;
 }
 
@@ -78,16 +81,15 @@ int get_index_of_char_in_child_array(char c)
     return c - 'a';
 }
 
-void add_macro_to_tree(macro_node *head, macro node)
+void add_macro_to_tree(macro_node *head, macro *node)
 {
-    int i, letter = 0, length = strlen(node.name);
+    int i, letter = 0;
+    size_t length = strlen(node->name);
     macro_node *current;
 
     if (length == 0)
     {
-        head->data = malloc(sizeof(macro));
-        head->data->name = node.name;
-        head->data->value = node.value;
+        head->data = node;
         return;
     }
 
@@ -95,7 +97,7 @@ void add_macro_to_tree(macro_node *head, macro node)
     current = head;
     for (i = 0; i < length; i++)
     {
-        letter = get_index_of_char_in_child_array((node.name)[i]);
+        letter = get_index_of_char_in_child_array((node->name)[i]);
 
         if (current->children[letter] == NULL)
             current->children[letter] = init_macro_node();
@@ -103,14 +105,13 @@ void add_macro_to_tree(macro_node *head, macro node)
     }
 
     /* putting the macro inside the tree */
-    current->data = malloc(sizeof(macro));
-    current->data->name = node.name;
-    current->data->value = node.value;
+    current->data = node;
 }
 
 macro *get_macro_for_name(macro_node head, const char *name)
 {
-    int i = 0, len = strlen(name);
+    int i = 0;
+    size_t len = strlen(name);
     macro_node *current = &head;
 
     for (; i < len; i++)
@@ -148,7 +149,6 @@ void delete_tree(macro_node *head)
     /* Free the macro data if it exists */
     if (head->data != NULL)
     {
-        free(head->data->name);
         free(head->data->value);
         free(head->data);
         head->data = NULL;
@@ -172,7 +172,6 @@ void zeroize_macro_tree(macro_node *head)
     /* Free the macro */
     if (head->data != NULL)
     {
-        free(head->data->name);
         free(head->data->value);
         free(head->data);
         head->data = NULL;

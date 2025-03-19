@@ -31,7 +31,11 @@
         "file.h": "c",
         "macro.h": "c",
         "command.h": "c",
-        "preprocessor.h": "c"
+        "preprocessor.h": "c",
+        "pass_one.h": "c",
+        "pass_two.h": "c",
+        "directive.h": "c",
+        "entry.h": "c"
     },
     "cSpell.words": [
         "adjmat",
@@ -41,6 +45,7 @@
         "mcroend",
         "mult",
         "mycomp",
+        "symb",
         "timediff",
         "zeroize"
     ]
