@@ -1,0 +1,15 @@
+
+
+MAIN:     mov r1, A
+    cmp #6, A
+    red A
+    prn r5
+    not A
+    inc r2
+    red A
+    prn r5
+    red A
+    prn r5
+
+.entry MAIN
+.extern A

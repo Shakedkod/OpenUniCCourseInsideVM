@@ -126,7 +126,7 @@ state parse_number(char *first_part, char **output, int *num, boolean first, siz
             {
                 if (sscanf(before, "%d", num) != 0)
                 {
-                    if (strlen(before) == 1)
+                    if (strlen(part) == 1)
                     {
                         part = strtok(NULL, WHITESPACES);
                         if (part == NULL)

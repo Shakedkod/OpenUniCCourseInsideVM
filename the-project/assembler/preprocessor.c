@@ -142,8 +142,9 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const
     size_t lines = num_of_lines(input), i;
     line_read current;
     macro *current_macro = NULL;
-    char *part, *dup_line;
+    char *part, *dup_line, *symbol_name = NULL;
     state status = DEFAULT_STATE;
+    boolean is_symbol = FALSE;
 
     if (!temp_file)
     {
@@ -174,11 +175,32 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const
 
         strcpy(dup_line, current.line);
         part = strtok(current.line, WHITESPACES);
+        if (part != NULL && part[strlen(part) - 1] == ':')
+        {
+            is_symbol = TRUE;
+            symbol_name = malloc((strlen(part) * sizeof(char)) + sizeof(char));
+            if (symbol_name == NULL)
+            {
+                fclose(temp_file);
+                status.status = E_MEMORY_NEEDED;
+                return status;
+            }
+
+            strcpy(symbol_name, part);
+            part = strtok(NULL, WHITESPACES);
+        }
 
         if (part == NULL) /* the line is only WHITESPACES */
             fputs(dup_line, temp_file);
         else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
+        {
+            if (is_symbol)
+            {
+                fputs(symbol_name, temp_file);
+                fputs(" ", temp_file);
+            }
             fputs(current_macro->value, temp_file);
+        }
         else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
         {
             if ((status = create_macro(input, current_macro, output_macros, i)).status != OK)
@@ -200,6 +222,13 @@ state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const
         /* moves the temp_file to the next line */
         fprintf(temp_file, "\n");
         free(dup_line);
+        is_symbol = FALSE;
+
+        if (symbol_name != NULL)
+        {
+            free(symbol_name);
+            symbol_name = NULL;
+        }
     }
 
     if (status.status == OK)
