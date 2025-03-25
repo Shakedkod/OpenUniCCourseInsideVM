@@ -81,11 +81,12 @@ state assemble_symbols(
             /*! DOT INSTRUCTION */
             if (status.status == OK)
             {
-                if (part == NULL)
+                if (part == NULL || part[0] == '\0')
                 {
                     if (is_symbol)
                     {
                         status.status = E_SYMBOL_MISSING_DEFINITON;
+                        print_status(status);
                         end_status.status = status.status;
                     }
                 }

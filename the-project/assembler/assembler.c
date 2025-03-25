@@ -48,10 +48,11 @@ int main(int argc, char *argv[])
         /* reset parameters */
         zeroize_state(&status);
         zeroize_macro_tree(&macros);
-        free_lines_list(file);
         free_symbols_list(symbols);
         free_directives_list(directives);
         free_entries_list(entries);
+        free_lines_list(file);
+        file = NULL;
 
         printf("file %s:\n", argv[i]);
         printf("-----------------\n");

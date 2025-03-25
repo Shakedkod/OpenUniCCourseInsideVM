@@ -9,7 +9,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_l
     char *part, *buffer, *pos, *temp, line_copy[MAX_LINE_LENGTH + 2];
     line_read current;
     size_t buffer_len = 0, buffer_size = 0, line_len = 0;
-    state status = {OK, "", 0};
+    state status = DEFAULT_STATE;
     status.line_num = current_line;
     output = malloc(sizeof(macro_node));
 
@@ -114,7 +114,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_l
     }
     
     part = strtok(NULL, WHITESPACES);
-    if (part != NULL)
+    if (part != NULL && part[0] != '\n' && part[0] != '\0')
     {
         status.status = E_MACRO_DEF_END_EXCESS;
         return status;

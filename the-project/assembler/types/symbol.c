@@ -27,16 +27,19 @@ state check_symbol_name_validity(const char *name, symbol_node *head, macro_node
 	if (strlen(name) > MAX_SYMBOL_NAME_LENGTH)
 		status.status = E_SYMBOL_NAME_ILLEGAL_LENGTH;
 
-	if (status.status == OK && isalpha(name[0]))
+	if (status.status == OK)
 	{
-		for (; (i < strlen(name)) && (status.status == OK); i++)
+		if (isalpha(name[0]))
 		{
-			if (!isalpha(name[i]) && !isdigit(name[i]))
-				status.status = E_SYMBOL_NAME_ILLEGAL_CHARACTER;
+			for (; (i < strlen(name)) && (status.status == OK); i++)
+			{
+				if (!isalpha(name[i]) && !isdigit(name[i]))
+					status.status = E_SYMBOL_NAME_ILLEGAL_CHARACTER;
+			}
 		}
+		else
+			status.status = E_SYMBOL_NAME_START_ILLEGAL;
 	}
-	else
-		status.status = E_SYMBOL_NAME_START_ILLEGAL;
 
 	if (status.status == OK)
 	{
@@ -89,48 +92,4 @@ symbol *get_symbol_in_list(symbol_node *head, const char name[MAX_SYMBOL_NAME_LE
 boolean is_symbol_in_list(symbol_node *head, const char name[MAX_SYMBOL_NAME_LENGTH + 1])
 {
 	return (get_symbol_in_list(head, name) != NULL);
-}
-
-#include <stdio.h>
-
-void DEBUG_print_symbol(symbol sym)
-{
-	printf("Name: %s, Address: %u, Type: ", sym.name, sym.symbol_address);
-
-	switch (sym.type) 
-	{
-	case UNKNOWN_SYMBOL_TYPE:
-		printf("UNKNOWN_TYPE, ");
-		break;
-	case DATA_SYMBOL_TYPE:
-		printf("DATA_TYPE, ");
-		break;
-	case EXTERN_SYMBOL_TYPE:
-		printf("EXTERN_TYPE, ");
-		break;
-	case INSTRUCTION_SYMBOL_TYPE:
-		printf("DIRECTIVE_TYPE, ");
-		break;
-	default:
-		printf("Invalid type, ");
-		break;
-	}
-
-	if (sym.type == DATA_SYMBOL_TYPE)
-	{
-		switch (sym.value->type)
-		{
-		case STRING_DATA_TYPE:
-			printf("DataType: STRING_TYPE, Data: %c", sym.value->data.string);
-			break;
-		case INTEGER_DATA_TYPE:
-			printf("DataType: INTEGER_TYPE, FirstValue: %d", sym.value->data.integer);
-			break;
-		default:
-			printf("DataType: UNKNOWN_TYPE");
-			break;
-		}
-	}
-
-	printf("\n");
 }

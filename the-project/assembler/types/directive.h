@@ -69,6 +69,4 @@ typedef struct _dn
 directive_node* init_directive_node();
 void free_directives_list(directive_node* head);
 
-void DEBUG_print_directives_list(directive_node *head);
-
 #endif
