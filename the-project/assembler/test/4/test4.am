@@ -11,4 +11,4 @@ firstSymbol: .data 5
 firstSymbol:
 add:
 sub:
-emptyMac1:
+emptyMac1: .data 5

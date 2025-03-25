@@ -12,6 +12,6 @@ firstSymbol:
 add:
 sub:
 mcro emptyMac1
-add #1, firstSymbol
+    add #1, firstSymbol
 mcroend
 emptyMac1: .data 5

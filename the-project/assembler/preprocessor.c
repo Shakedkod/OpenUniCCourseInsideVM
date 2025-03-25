@@ -60,7 +60,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_l
 
     pos = buffer;
 
-    while (!(current.status == READ_ERROR || current.status == READ_EOF) && (part == NULL || strcmp(part, MACRO_DEF_END) != 0))
+    while (!(current.status == READ_ERROR || current.status == READ_EOF) && (current.line[0] == '\0' || strcmp(current.line, MACRO_DEF_END) != 0))
     {
         strcpy(line_copy, current.line);
         part = strtok(current.line, WHITESPACES);
@@ -113,6 +113,7 @@ state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_l
         }
     }
     
+    part = strtok(NULL, WHITESPACES);
     part = strtok(NULL, WHITESPACES);
     if (part != NULL && part[0] != '\n' && part[0] != '\0')
     {
