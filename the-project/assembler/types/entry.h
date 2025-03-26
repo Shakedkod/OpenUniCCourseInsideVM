@@ -17,7 +17,21 @@ typedef struct _enn
 	entry value;
 } entry_node;
 
+/*
+	this function creates an entry node and puts it in a position in memory.
+
+	output(entry_node *):
+		a pointer to the entry node created.
+*/
 entry_node *init_entry_node();
+
+/*
+	this function frees the entries list given to it.
+	the head will be null after this function.
+
+	input:
+		1. entry_node *head: the head of the list.
+*/
 void free_entries_list(entry_node *head);
 
 #endif

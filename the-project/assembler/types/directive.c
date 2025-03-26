@@ -21,6 +21,14 @@ void copy_instruction(instruction *dest, instruction input)
 
 int translate_arg_type(operand_address_type type)
 {
+    /*
+        the function translates the argument types to the numbers in the translated instruction.
+
+        input:
+            1. operand_address_type type: the argument type.
+        output(int):
+            the number to put in the instruction word.
+    */
     switch (type)
     {
     case IMMEDIATE_ADDRESS:
