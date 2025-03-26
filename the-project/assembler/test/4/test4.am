@@ -1,6 +1,4 @@
 ; every possible error for the first pass is going to be here
-thislineisjustfartoolongforthisassemblertocomprehendsoIwillwriteitheretotestit.Hi
-toeveryonewhochecksthis.
 ; symbol errors
 ?Symbol:
 #symbol:
@@ -28,3 +26,95 @@ emptyMac1: .data 5
 .data 7,-8+3
 .data 7a
 .data hi
+
+; instruction errors
+mov
+mov &symbol
+mov #4
+mov #4,
+mov #4, #5
+mov #4, &symbol
+cmp
+cmp &symbol
+cmp #4
+cmp #4,
+cmp #4, &symbol
+add
+add &symbol
+add #4
+add #4,
+add #4, #5
+add #4, &symbol
+sub
+sub &symbol
+sub #4
+sub #4,
+sub #4, #5
+sub #4, &symbol
+lea
+lea #4
+lea &symbol
+lea r3
+lea symbol
+lea symbol, 
+lea symbol, #4
+lea symbol, &symbol
+clr
+clr #4
+clr &symbol
+clr symbol,
+clr symbol, #4
+not
+not #4
+not &symbol
+not symbol,
+not symbol, #4
+inc
+inc #4
+inc &symbol
+inc symbol,
+inc symbol, #4
+dec
+dec #4
+dec &symbol
+dec symbol,
+dec symbol, #4
+jmp
+jmp #4
+jmp r1
+jmp symbol,
+jmp symbol, r1
+bne
+bne #4
+bne r1
+bne symbol,
+bne symbol, r1
+jsr
+jsr #4
+jsr r1
+jsr symbol,
+jsr symbol, r1
+red
+red #4
+red &symbol
+red symbol,
+red symbol, #4
+prn
+prn &symbol
+prn #4,
+prn #4, r1
+rts #4
+rts symbol
+rts &symbol
+rts r1
+rts #4, symbol
+stop #4
+stop symbol
+stop &symbol
+stop r1
+stop #4, symbol
+
+; longer then allowed line
+thislineisjustfartoolongforthisassemblertocomprehendsoIwillwriteitheretotestit.Hi
+toeveryonewhochecksthis.
+; test macro

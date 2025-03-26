@@ -94,7 +94,7 @@ struct code_to_message
     {E_INSTRUCTION_INPUT_STRAIGHT_REGISTER_NOT_ALLOWED, "The command '%s' does not accept a straight register address in its input variable. In line %d it happens.", PATTERN_S_D},
     {E_INSTRUCTION_OUTPUT_STRAIGHT_REGISTER_NOT_ALLOWED, "The command '%s' does not accept a straight register address in its output variable. In line %d it happens.", PATTERN_S_D},
     {E_INSTRUCTION_EXCESS, "After a command there should be maximum of 2 vars, and in line %d there are more. each var except from the first starts with a comma.", PATTERN_D},
-    {E_RELATIVE_SYMBOL_EXTERN, "The symbol '%s' is an external symbol, and thus can't be used in as relative.", PATTERN_S},
+    {E_RELATIVE_SYMBOL_EXTERN, "The symbol '%s' is an external symbol, and thus can't be used as relative.", PATTERN_S},
                 /* command */
     {E_INSTRUCTION_COMMAND_ABSENT, "The command entered in line %d is '%s', but this command dosen't exists.", PATTERN_D_S},
                 /* register */

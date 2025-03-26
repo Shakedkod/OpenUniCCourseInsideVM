@@ -368,35 +368,40 @@ state parse_add(void *output, size_t line)
 
     /* INPUT */
     part = strtok(NULL, WHITESPACES);
-    if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
+    if (part != NULL)
     {
-        status = parse_number(part, &part, &num, TRUE, status.line_num);
-        if (status.status == OK)
+        if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
         {
-            (dr_ptr->number_of_words)++;
-            dr_ptr->input_type = IMMEDIATE_ADDRESS;
-            dr_ptr->input.type = INTEGER_DATA_TYPE;
-            dr_ptr->input.data.integer = num;
-        }
-    }
-    else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
-    else /* 3 - STRAIGHT_REGISTER_ADDRESS */
-    {
-        before = part;
-        status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
-        if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
-        {
-            status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+            status = parse_number(part, &part, &num, TRUE, status.line_num);
             if (status.status == OK)
             {
                 (dr_ptr->number_of_words)++;
-                dr_ptr->input_type = STRAIGHT_ADDRESS;
-                dr_ptr->input.type = SYMBOL_DATA_TYPE;
-                strcpy(dr_ptr->input.data.symbol, symbol_name);
+                dr_ptr->input_type = IMMEDIATE_ADDRESS;
+                dr_ptr->input.type = INTEGER_DATA_TYPE;
+                dr_ptr->input.data.integer = num;
+            }
+        }
+        else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
+        else /* 3 - STRAIGHT_REGISTER_ADDRESS */
+        {
+            before = part;
+            status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
+            if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
+            {
+                status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+                if (status.status == OK)
+                {
+                    (dr_ptr->number_of_words)++;
+                    dr_ptr->input_type = STRAIGHT_ADDRESS;
+                    dr_ptr->input.type = SYMBOL_DATA_TYPE;
+                    strcpy(dr_ptr->input.data.symbol, symbol_name);
+                }
             }
         }
     }
+    else
+        status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
@@ -408,6 +413,8 @@ state parse_add(void *output, size_t line)
 
     if (status.status == OK)
     {
+        strcpy(status.data, "add");
+
         if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
             status.status = E_INSTRUCTION_OUTPUT_IMMEDIATE_NOT_ALLOWED;
         else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
@@ -576,35 +583,40 @@ state parse_cmp(void *output, size_t line)
 
     /* INPUT */
     part = strtok(NULL, WHITESPACES);
-    if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
+    if (part != NULL)
     {
-        status = parse_number(part, &part, &num, TRUE, status.line_num);
-        if (status.status == OK)
+        if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
         {
-            (dr_ptr->number_of_words)++;
-            dr_ptr->input_type = IMMEDIATE_ADDRESS;
-            dr_ptr->input.type = INTEGER_DATA_TYPE;
-            dr_ptr->input.data.integer = num;
-        }
-    }
-    else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
-    else /* 3 - STRAIGHT_REGISTER_ADDRESS */
-    {
-        before = part;
-        status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
-        if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
-        {
-            status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+            status = parse_number(part, &part, &num, TRUE, status.line_num);
             if (status.status == OK)
             {
                 (dr_ptr->number_of_words)++;
-                dr_ptr->input_type = STRAIGHT_ADDRESS;
-                dr_ptr->input.type = SYMBOL_DATA_TYPE;
-                strcpy(dr_ptr->input.data.symbol, symbol_name);
+                dr_ptr->input_type = IMMEDIATE_ADDRESS;
+                dr_ptr->input.type = INTEGER_DATA_TYPE;
+                dr_ptr->input.data.integer = num;
+            }
+        }
+        else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
+        else /* 3 - STRAIGHT_REGISTER_ADDRESS */
+        {
+            before = part;
+            status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
+            if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
+            {
+                status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+                if (status.status == OK)
+                {
+                    (dr_ptr->number_of_words)++;
+                    dr_ptr->input_type = STRAIGHT_ADDRESS;
+                    dr_ptr->input.type = SYMBOL_DATA_TYPE;
+                    strcpy(dr_ptr->input.data.symbol, symbol_name);
+                }
             }
         }
     }
+    else
+        status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
@@ -616,6 +628,8 @@ state parse_cmp(void *output, size_t line)
 
     if (status.status == OK)
     {
+        strcpy(status.data, "cmp");
+
         if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
         {
             status = parse_number(part, &part, &num, FALSE, status.line_num);
@@ -911,21 +925,26 @@ state parse_lea(void *output, size_t line)
 
     /* INPUT */
     part = strtok(NULL, WHITESPACES);
-    if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_IMMEDIATE_NOT_ALLOWED;
-    else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
-    else /* 1 - STRAIGHT_ADDRESS */
+    if (part != NULL)
     {
-        status = parse_symbol(part, &part, symbol_name, TRUE, status.line_num);
-        if (status.status == OK)
+        if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_IMMEDIATE_NOT_ALLOWED;
+        else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
+        else /* 1 - STRAIGHT_ADDRESS */
         {
-            (dr_ptr->number_of_words)++;
-            dr_ptr->input_type = STRAIGHT_ADDRESS;
-            dr_ptr->input.type = SYMBOL_DATA_TYPE;
-            strcpy(dr_ptr->input.data.symbol, symbol_name);
+            status = parse_symbol(part, &part, symbol_name, TRUE, status.line_num);
+            if (status.status == OK)
+            {
+                (dr_ptr->number_of_words)++;
+                dr_ptr->input_type = STRAIGHT_ADDRESS;
+                dr_ptr->input.type = SYMBOL_DATA_TYPE;
+                strcpy(dr_ptr->input.data.symbol, symbol_name);
+            }
         }
     }
+    else
+        status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
@@ -937,6 +956,8 @@ state parse_lea(void *output, size_t line)
 
     if (status.status == OK)
     {
+        strcpy(status.data, "lea");
+
         if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
             status.status = E_INSTRUCTION_OUTPUT_IMMEDIATE_NOT_ALLOWED;
         else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
@@ -985,35 +1006,40 @@ state parse_mov(void *output, size_t line)
 
     /* INPUT */
     part = strtok(NULL, WHITESPACES);
-    if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
+    if (part != NULL)
     {
-        status = parse_number(part, &part, &num, TRUE, status.line_num);
-        if (status.status == OK)
+        if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
         {
-            (dr_ptr->number_of_words)++;
-            dr_ptr->input_type = IMMEDIATE_ADDRESS;
-            dr_ptr->input.type = INTEGER_DATA_TYPE;
-            dr_ptr->input.data.integer = num;
-        }
-    }
-    else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
-    else /* 3 - STRAIGHT_REGISTER_ADDRESS */
-    {
-        before = part;
-        status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
-        if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
-        {
-            status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+            status = parse_number(part, &part, &num, TRUE, status.line_num);
             if (status.status == OK)
             {
                 (dr_ptr->number_of_words)++;
-                dr_ptr->input_type = STRAIGHT_ADDRESS;
-                dr_ptr->input.type = SYMBOL_DATA_TYPE;
-                strcpy(dr_ptr->input.data.symbol, symbol_name);
+                dr_ptr->input_type = IMMEDIATE_ADDRESS;
+                dr_ptr->input.type = INTEGER_DATA_TYPE;
+                dr_ptr->input.data.integer = num;
+            }
+        }
+        else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
+        else /* 3 - STRAIGHT_REGISTER_ADDRESS */
+        {
+            before = part;
+            status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
+            if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
+            {
+                status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+                if (status.status == OK)
+                {
+                    (dr_ptr->number_of_words)++;
+                    dr_ptr->input_type = STRAIGHT_ADDRESS;
+                    dr_ptr->input.type = SYMBOL_DATA_TYPE;
+                    strcpy(dr_ptr->input.data.symbol, symbol_name);
+                }
             }
         }
     }
+    else
+        status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
@@ -1025,6 +1051,8 @@ state parse_mov(void *output, size_t line)
 
     if (status.status == OK)
     {
+        strcpy(status.data, "mov");
+
         if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
             status.status = E_INSTRUCTION_OUTPUT_IMMEDIATE_NOT_ALLOWED;
         else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
@@ -1321,35 +1349,40 @@ state parse_sub(void *output, size_t line)
 
     /* INPUT */
     part = strtok(NULL, WHITESPACES);
-    if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
+    if (part != NULL)
     {
-        status = parse_number(part, &part, &num, TRUE, status.line_num);
-        if (status.status == OK)
+        if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
         {
-            (dr_ptr->number_of_words)++;
-            dr_ptr->input_type = IMMEDIATE_ADDRESS;
-            dr_ptr->input.type = INTEGER_DATA_TYPE;
-            dr_ptr->input.data.integer = num;
-        }
-    }
-    else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
-        status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
-    else /* 3 - STRAIGHT_REGISTER_ADDRESS */
-    {
-        before = part;
-        status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
-        if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
-        {
-            status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+            status = parse_number(part, &part, &num, TRUE, status.line_num);
             if (status.status == OK)
             {
                 (dr_ptr->number_of_words)++;
-                dr_ptr->input_type = STRAIGHT_ADDRESS;
-                dr_ptr->input.type = SYMBOL_DATA_TYPE;
-                strcpy(dr_ptr->input.data.symbol, symbol_name);
+                dr_ptr->input_type = IMMEDIATE_ADDRESS;
+                dr_ptr->input.type = INTEGER_DATA_TYPE;
+                dr_ptr->input.data.integer = num;
+            }
+        }
+        else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */
+            status.status = E_INSTRUCTION_INPUT_RELATIVE_NOT_ALLOWED;
+        else /* 3 - STRAIGHT_REGISTER_ADDRESS */
+        {
+            before = part;
+            status = parse_register(part, &part, dr_ptr, TRUE, status.line_num);
+            if (status.status != OK && status.status != E_INSTRUCTION_EXCESS) /* 1 - STRAIGHT_ADDRESS */
+            {
+                status = parse_symbol(before, &part, symbol_name, TRUE, status.line_num);
+                if (status.status == OK)
+                {
+                    (dr_ptr->number_of_words)++;
+                    dr_ptr->input_type = STRAIGHT_ADDRESS;
+                    dr_ptr->input.type = SYMBOL_DATA_TYPE;
+                    strcpy(dr_ptr->input.data.symbol, symbol_name);
+                }
             }
         }
     }
+    else
+        status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
@@ -1361,6 +1394,8 @@ state parse_sub(void *output, size_t line)
 
     if (status.status == OK)
     {
+        strcpy(status.data, "sub");
+
         if (part[0] == '#') /* 0 - IMMEDIATE_ADDRESS */
             status.status = E_INSTRUCTION_OUTPUT_IMMEDIATE_NOT_ALLOWED;
         else if (part[0] == '&') /* 2 - RELATIVE_ADDRESS */

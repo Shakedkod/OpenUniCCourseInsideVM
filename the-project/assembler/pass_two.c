@@ -35,6 +35,7 @@ state translate_directives(directive_node *directives, symbol_node *symbols, ext
 	}
 
 	/* updating directives */
+	status.status = OK;
 	while (ptr != NULL)
 	{
 		if (ptr->value.type != DATA_DIRECTIVE_TYPE && ptr->value.type != EXTERN_DIRECTIVE_TYPE) /* .data/.string/.extern -> skip */
@@ -169,7 +170,14 @@ state translate_directives(directive_node *directives, symbol_node *symbols, ext
 				else if (ptr->value.line.inst.output_type == RELATIVE_ADDRESS) /* weird symbol */
 				{
 					temp_symb = get_symbol_in_list(symbols, ptr->value.line.inst.output.data.symbol);
-					if (temp_symb->type == EXTERN_SYMBOL_TYPE) /* external symbol */
+					if (temp_symb == NULL)
+					{
+						strcpy(status.data, ptr->value.line.inst.output.data.symbol);
+						status.status = E_SYMBOL_NOT_FOUND;
+						print_status(status);
+						end_status.status = status.status;
+					}
+					else if (temp_symb->type == EXTERN_SYMBOL_TYPE) /* external symbol */
 					{
 						strcpy(status.data, ptr->value.line.inst.output.data.symbol);
 						status.status = E_RELATIVE_SYMBOL_EXTERN;
@@ -186,6 +194,7 @@ state translate_directives(directive_node *directives, symbol_node *symbols, ext
 		}
 
 		ptr = ptr->next;
+		status.status = OK;
 	}
 
 	return end_status;
