@@ -3,16 +3,6 @@
 
 #include "data.h"
 
-void copy_data(data *dest, data input)
-{
-	dest->type = input.type;
-	
-	if (dest->type == STRING_DATA_TYPE || dest->type == SYMBOL_DATA_TYPE)
-		dest->data.string = input.data.string;
-	if (dest->type == INTEGER_DATA_TYPE)
-		dest->data.integer = input.data.integer;
-}
-
 state check_valid_number(const char str[MAX_LINE_LENGTH], size_t length, size_t line)
 {
 	state status = DEFAULT_STATE;

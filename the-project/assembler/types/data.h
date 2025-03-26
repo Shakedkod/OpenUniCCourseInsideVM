@@ -38,8 +38,6 @@ typedef struct
 	} data;
 } data;
 
-void copy_data(data *dest, data input);
-
 state check_valid_number(const char str[MAX_LINE_LENGTH], size_t length, size_t line);
 state get_string_indexes(size_t *string_start, size_t *string_end, char line[MAX_LINE_LENGTH], size_t line_num);
 

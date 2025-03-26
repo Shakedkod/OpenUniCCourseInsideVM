@@ -22,8 +22,6 @@ typedef struct
 	data *value;
 } symbol;
 
-void copy_symbol(symbol *dest, symbol input);
-
 typedef struct _sn *symbol_node_ptr;
 typedef struct _sn
 {

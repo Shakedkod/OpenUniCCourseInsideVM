@@ -19,18 +19,6 @@ void copy_instruction(instruction *dest, instruction input)
     dest->output_type = input.output_type;
 }
 
-void copy_directive(directive *dest, directive input)
-{
-    dest->directive_address = input.directive_address;
-    dest->type = input.type;
-
-    /* instruction directive */
-    if (dest->type == INSTRUCTION_DIRECTIVE_TYPE)
-        copy_instruction(&(dest->line.inst), input.line.inst);
-    else
-        copy_data(&(dest->line.value), input.line.value);
-}
-
 int translate_arg_type(operand_address_type type)
 {
     switch (type)

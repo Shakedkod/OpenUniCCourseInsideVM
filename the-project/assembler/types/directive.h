@@ -47,8 +47,6 @@ typedef struct
 	
 } directive;
 
-void copy_directive(directive *dest, directive input);
-
 typedef struct
 {
     char num_of_words;

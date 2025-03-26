@@ -5,16 +5,6 @@
 #include "command.h"
 #include "symbol.h"
 
-void copy_symbol(symbol *dest, symbol input)
-{
-	dest->symbol_address = input.symbol_address;
-	strcpy(dest->name, input.name);
-	dest->type = input.type;
-
-	if (dest->type == DATA_SYMBOL_TYPE)
-		dest->value = input.value;
-}
-
 boolean is_symbol_in_list(symbol_node *head, const char name[MAX_SYMBOL_NAME_LENGTH + 1]);
 
 state check_symbol_name_validity(const char *name, symbol_node *head, macro_node macro_head, size_t line)
