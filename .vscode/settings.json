@@ -35,7 +35,8 @@
         "pass_one.h": "c",
         "pass_two.h": "c",
         "directive.h": "c",
-        "entry.h": "c"
+        "entry.h": "c",
+        "*.tcc": "c"
     },
     "cSpell.words": [
         "adjmat",

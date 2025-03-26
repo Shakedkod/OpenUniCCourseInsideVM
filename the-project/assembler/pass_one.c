@@ -327,6 +327,7 @@ state create_data(directive_node *list, directive **first, data_type type, unsig
             4. unsigned int *ic: the current instruction count.
             5. unsigned int *dc: the current data count.
             6. char original_line[MAX_LINE_LENGTH]: the original line.
+            7. size_t line: the line that the macro is on - used for error output.
         output(state):
             the state of the program after the function.
     */

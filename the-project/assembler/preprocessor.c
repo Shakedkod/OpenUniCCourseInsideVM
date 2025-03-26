@@ -4,8 +4,129 @@
 #include "types/file.h"
 #include "types/command.h"
 
+state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_line);
+
+state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const char *file_output_name)
+{
+    FILE *temp_file = tmpfile();
+    size_t lines = num_of_lines(input), i;
+    line_read current;
+    macro *current_macro = NULL;
+    char *part, *dup_line, *symbol_name = NULL;
+    state status = DEFAULT_STATE;
+    boolean is_symbol = FALSE;
+
+    if (!temp_file)
+    {
+        status.status = E_MEMORY_NEEDED;
+        return status;
+    }
+
+    fseek(input, 0, SEEK_SET);
+    for (i = 0; i < lines; i++)
+    {
+        status.line_num = i;
+        current = read_line(input);
+        if (current.status == READ_ERROR)
+        {
+            fclose(temp_file);
+            status.status = E_READ_ERROR;
+            return status;
+        }
+        
+        /* check the first part of the line*/
+        dup_line = malloc(sizeof(current.line));
+        if (dup_line == NULL)
+        {
+            fclose(temp_file);
+            status.status = E_MEMORY_NEEDED;
+            return status;
+        }
+
+        strcpy(dup_line, current.line);
+        part = strtok(current.line, WHITESPACES);
+        if (part != NULL && part[strlen(part) - 1] == ':')
+        {
+            is_symbol = TRUE;
+            symbol_name = malloc((strlen(part) * sizeof(char)) + sizeof(char));
+            if (symbol_name == NULL)
+            {
+                fclose(temp_file);
+                status.status = E_MEMORY_NEEDED;
+                return status;
+            }
+
+            strcpy(symbol_name, part);
+            part = strtok(NULL, WHITESPACES);
+        }
+
+        if (part == NULL) /* the line is only WHITESPACES */
+            fputs(dup_line, temp_file);
+        else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
+        {
+            if (is_symbol)
+            {
+                fputs(symbol_name, temp_file);
+                fputs(" ", temp_file);
+            }
+            fputs(current_macro->value, temp_file);
+        }
+        else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
+        {
+            if ((status = create_macro(input, current_macro, output_macros, i)).status != OK)
+            {
+                fclose(temp_file);
+                return status;
+            }
+
+            i = status.line_num; /* forwarding i past the macro */
+            /* 
+                removes the last newline char so that when I add one at the end of this repetition of the while loop, 
+                there won't be an extra empty line
+            */
+            fseek(temp_file, -1, SEEK_CUR);
+        }
+        else /* not a macro */
+            fputs(dup_line, temp_file);
+        
+        /* moves the temp_file to the next line */
+        fprintf(temp_file, "\n");
+        free(dup_line);
+        is_symbol = FALSE;
+
+        if (symbol_name != NULL)
+        {
+            free(symbol_name);
+            symbol_name = NULL;
+        }
+    }
+
+    if (status.status == OK)
+    {
+        *output = temp_file;
+
+        status = save_file(temp_file, file_output_name, FILE_AM);
+        fclose(temp_file);
+    }
+    else
+        fclose(temp_file);
+
+    return status;
+}
+
 state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_line)
 {
+    /*
+        creates a macro from the input given.
+
+        input:
+            1. FILE *file: the file to be read from.
+            2. macro *output: the output macro. initial value doesn't matter.
+            3. macro_node *tree: the macros tree to be updated.
+            4. size_t current_line: the line that the macro is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     char *part, *buffer, *pos, *temp, line_copy[MAX_LINE_LENGTH + 2];
     line_read current;
     size_t buffer_len = 0, buffer_size = 0, line_len = 0;
@@ -134,113 +255,5 @@ state create_macro(FILE *file, macro *output, macro_node *tree, size_t current_l
 
     add_macro_to_tree(tree, output);
     free(buffer);
-    return status;
-}
-
-state expand_macros(FILE *input, FILE **output, macro_node *output_macros, const char *file_output_name)
-{
-    FILE *temp_file = tmpfile();
-    size_t lines = num_of_lines(input), i;
-    line_read current;
-    macro *current_macro = NULL;
-    char *part, *dup_line, *symbol_name = NULL;
-    state status = DEFAULT_STATE;
-    boolean is_symbol = FALSE;
-
-    if (!temp_file)
-    {
-        status.status = E_MEMORY_NEEDED;
-        return status;
-    }
-
-    fseek(input, 0, SEEK_SET);
-    for (i = 0; i < lines; i++)
-    {
-        status.line_num = i;
-        current = read_line(input);
-        if (current.status == READ_ERROR)
-        {
-            fclose(temp_file);
-            status.status = E_READ_ERROR;
-            return status;
-        }
-        
-        /* check the first part of the line*/
-        dup_line = malloc(sizeof(current.line));
-        if (dup_line == NULL)
-        {
-            fclose(temp_file);
-            status.status = E_MEMORY_NEEDED;
-            return status;
-        }
-
-        strcpy(dup_line, current.line);
-        part = strtok(current.line, WHITESPACES);
-        if (part != NULL && part[strlen(part) - 1] == ':')
-        {
-            is_symbol = TRUE;
-            symbol_name = malloc((strlen(part) * sizeof(char)) + sizeof(char));
-            if (symbol_name == NULL)
-            {
-                fclose(temp_file);
-                status.status = E_MEMORY_NEEDED;
-                return status;
-            }
-
-            strcpy(symbol_name, part);
-            part = strtok(NULL, WHITESPACES);
-        }
-
-        if (part == NULL) /* the line is only WHITESPACES */
-            fputs(dup_line, temp_file);
-        else if ((current_macro = get_macro_for_name(*output_macros, part)) != NULL) /* found a usable macro */
-        {
-            if (is_symbol)
-            {
-                fputs(symbol_name, temp_file);
-                fputs(" ", temp_file);
-            }
-            fputs(current_macro->value, temp_file);
-        }
-        else if (strcmp(part, MACRO_DEF_START) == 0) /* found a macro definition */
-        {
-            if ((status = create_macro(input, current_macro, output_macros, i)).status != OK)
-            {
-                fclose(temp_file);
-                return status;
-            }
-
-            i = status.line_num; /* forwarding i past the macro */
-            /* 
-                removes the last newline char so that when I add one at the end of this repetition of the while loop, 
-                there won't be an extra empty line
-            */
-            fseek(temp_file, -1, SEEK_CUR);
-        }
-        else /* not a macro */
-            fputs(dup_line, temp_file);
-        
-        /* moves the temp_file to the next line */
-        fprintf(temp_file, "\n");
-        free(dup_line);
-        is_symbol = FALSE;
-
-        if (symbol_name != NULL)
-        {
-            free(symbol_name);
-            symbol_name = NULL;
-        }
-    }
-
-    if (status.status == OK)
-    {
-        *output = temp_file;
-
-        status = save_file(temp_file, file_output_name, FILE_AM);
-        fclose(temp_file);
-    }
-    else
-        fclose(temp_file);
-
     return status;
 }
