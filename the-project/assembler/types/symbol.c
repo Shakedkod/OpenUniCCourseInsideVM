@@ -81,5 +81,14 @@ symbol *get_symbol_in_list(symbol_node *head, const char name[MAX_SYMBOL_NAME_LE
 
 boolean is_symbol_in_list(symbol_node *head, const char name[MAX_SYMBOL_NAME_LENGTH + 1])
 {
+	/*
+		checks if a symbol is in the list by name.
+
+		input:
+			1. symbol_node *head: the head of the list.
+			2. const char name[MAX_SYMBOL_NAME_LENGTH + 1]: the name to be checked.
+		output(boolean):
+			TRUE if found, else FALSE.
+	*/
 	return (get_symbol_in_list(head, name) != NULL);
 }

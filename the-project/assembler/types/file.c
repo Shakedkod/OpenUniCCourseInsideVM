@@ -67,26 +67,6 @@ boolean is_all_whitespaces(const char *str)
     return TRUE;
 }
 
-char *get_extention_for_type(file_type type)
-{
-    switch (type)
-    {
-    case FILE_AS:
-        return ".as";
-    case FILE_AM:
-        return ".am";
-    case FILE_ENT:
-        return ".ent";
-    case FILE_EXT:
-        return ".ext";
-    case FILE_OB:
-        return ".ob";
-    
-    default:
-        return NULL;
-    }
-}
-
 state get_file(char *path, FILE **output, file_type type)
 {
     state status = DEFAULT_STATE;

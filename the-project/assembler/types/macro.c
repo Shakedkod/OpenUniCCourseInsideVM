@@ -48,13 +48,14 @@ state is_name_allowed(const char *name, const macro_node head, size_t line)
     return status;
 }
 
-boolean equals(macro a, macro b)
-{
-    return strcmp(a.name, b.name) && strcmp(a.value, b.value);
-}
-
 macro_node *init_macro_node()
 {
+    /*
+        this function creates an macro node and puts it in a position in memory.
+
+	    output(macro_node *):
+            a pointer to the macro node created.
+    */
     int i;
 
     macro_node *result = malloc(sizeof(macro_node));
@@ -72,6 +73,14 @@ macro_node *init_macro_node()
 
 int get_index_of_char_in_child_array(char c)
 {
+    /*
+        gets the index of a char in the array
+
+        input:
+            1. char c: the char.
+        output(int):
+            the index.
+    */
     if (c == '_')
         return NUM_OF_ALLOWED_CHARACTERS - 1;
     if (toupper(c) == c)
