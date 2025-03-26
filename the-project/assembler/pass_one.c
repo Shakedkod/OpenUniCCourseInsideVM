@@ -317,6 +317,19 @@ state assemble_symbols(
 
 state create_data(directive_node *list, directive **first, data_type type, unsigned int *ic, unsigned int *dc, char original_line[MAX_LINE_LENGTH], size_t line)
 {
+    /*
+        creates a data directive from the inputted line.
+
+        input:
+            1. directive_node *list: the directives list to be updated.
+            2. directive **first: the directive created. initial value doesn't matter.
+            3. data_type type: the type of the data(string or int).
+            4. unsigned int *ic: the current instruction count.
+            5. unsigned int *dc: the current data count.
+            6. char original_line[MAX_LINE_LENGTH]: the original line.
+        output(state):
+            the state of the program after the function.
+    */
     state status = DEFAULT_STATE;
     char *part, part_before[MAX_LINE_LENGTH];
 
@@ -531,6 +544,19 @@ state create_data(directive_node *list, directive **first, data_type type, unsig
 
 state create_symbol(symbol_node *list, const char name[MAX_SYMBOL_NAME_LENGTH + 1], data *value, symbol_type type, address value_address, size_t line)
 {
+    /*
+        creates a symbol from the input given.
+
+        input:
+            1. symbol_node *list: the list of symbols to be updated.
+            2. const char name[MAX_SYMBOL_NAME_LENGTH + 1]: the name of the symbol to be created.
+            3. data *value: a pointer to the value of the symbol.
+            4. symbol_type type: the type of the symbol(data/instruction/extern).
+            5. address value_address: the address of the symbol.
+            6. size_t line: the line that the macro is on - used for error output.
+        output(state):
+            the state of the program after the function.
+    */
     symbol_node *ptr = list;
 
     state status = DEFAULT_STATE;
@@ -556,6 +582,18 @@ state create_symbol(symbol_node *list, const char name[MAX_SYMBOL_NAME_LENGTH + 
 
 state create_extern(symbol_node *symbol_list, external_node *external_list, macro_node macros, unsigned int *ic, size_t line)
 {
+    /*
+        creates an external from the input given.
+
+        input:
+            1. symbol_node *list: the list of symbols to be updated.
+            2. external_node *external_list: the list of externals to be updated.
+            3. macro_node macros: the macros tree.
+            4. unsigned int *ic: the current instruction counter.
+            5. size_t line: the line that the macro is on - used for error output.
+        output(state):
+            the state of the program after the function.
+    */
     char *part, name[MAX_SYMBOL_NAME_LENGTH + 1];
 
     external_node *ptr = external_list;
@@ -600,6 +638,16 @@ state create_extern(symbol_node *symbol_list, external_node *external_list, macr
 
 state create_entry(entry_node *list, macro_node macros, size_t line)
 {
+    /*
+        creates an entry from the input given.
+
+        input:
+            1. entry_node *list: the list of entries to be updated.
+            2. macro_node macros: the macros tree.
+            3. size_t line: the line that the macro is on - used for error output.
+        output(state):
+            the state of the program after the function.
+    */
     state status = DEFAULT_STATE;
     entry_node *ptr = list, *before;
     char *part;
@@ -638,6 +686,17 @@ state create_entry(entry_node *list, macro_node macros, size_t line)
 
 state create_instruction(char *first_part, directive_node *list, unsigned int *ic, size_t line)
 {
+    /*
+        creates an instruction from the input given.
+
+        input:
+            1. char *first_part: the first part of the instruction.
+            2. directive_node *list: the directives list to be updated.
+            3. unsigned int *ic: the current instruction counter.
+            4. size_t line: the line that the macro is on - used for error output.
+        output(state):
+            the state of the program after the function.
+    */
     command *cmd;
     instruction instruction;
 

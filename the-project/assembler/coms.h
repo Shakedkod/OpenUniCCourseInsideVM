@@ -116,8 +116,20 @@ typedef struct
     size_t line_num;
 } state;
 
+/*
+    resets the state.
+
+    input:
+        1. state *status: the state to be reset.
+*/
 void zeroize_state(state *status);
 
+/*
+    prints the message connected to the status given.
+
+    input:
+        1. state status: the state to be printed.
+*/
 void print_status(state status);
 
 #endif

@@ -15,6 +15,7 @@
 
 int main(int argc, char *argv[])
 {
+    /* an assembler. */
     int i = 1;
     unsigned int final_instruction_counter = 0, final_data_counter = 0;
 
