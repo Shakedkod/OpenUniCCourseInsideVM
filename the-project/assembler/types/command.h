@@ -14,7 +14,24 @@ typedef struct
     state (*parse)(void *output, size_t line);
 } command;
 
+/*
+    the function finds a command with the name given.
+
+    input:
+        1. const char *name: the name of the command to find.
+    output(command *):
+        a pointer to the command in question. NULL if there is no such command.
+*/
 command *get_command(const char *name);
+
+/*
+    checks if a command exists in the assembler.
+
+    input:
+        1. const char *name: the name of the command.
+    output(boolean):
+        TRUE if it does, else FALSE 
+*/
 boolean command_exists(const char *name);
 
 #endif

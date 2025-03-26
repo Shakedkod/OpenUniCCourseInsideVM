@@ -10,8 +10,6 @@ typedef struct
 	address_node *locations;
 } external;
 
-void copy_external(external *dest, external input);
-
 typedef struct _exn *external_node_ptr;
 typedef struct _exn
 {

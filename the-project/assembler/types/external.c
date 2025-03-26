@@ -3,12 +3,6 @@
 
 #include "external.h"
 
-void copy_external(external *dest, external input)
-{
-	strcpy(dest->name, input.name);
-	copy_addresses_list(dest->locations, input.locations);
-}
-
 external_node* init_external_node()
 {
 	external_node* output = malloc(sizeof(external_node));

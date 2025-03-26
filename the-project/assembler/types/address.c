@@ -23,23 +23,3 @@ void free_addresses_list(address_node *head)
 		free(temp);
 	}
 }
-
-void copy_addresses_list(address_node *dest, address_node *input)
-{
-	address_node *ptr = input, *result_ptr = dest;
-
-	dest = init_address_node();
-	while (ptr != NULL)
-	{
-		result_ptr->next = malloc(sizeof(address_node));
-		if (result_ptr->next != NULL)
-		{
-			result_ptr = result_ptr->next;
-			result_ptr->position = ptr->position;
-		}
-
-		ptr = ptr->next;
-	}
-
-	dest = dest->next;
-}

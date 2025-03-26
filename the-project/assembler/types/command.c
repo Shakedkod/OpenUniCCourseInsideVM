@@ -80,6 +80,18 @@ boolean command_exists(const char *name)
 /* command helpers */
 state parse_number(char *first_part, char **output, int *num, boolean first, size_t line)
 {
+    /*
+        this function parses a number in the input line for use inside an instruction.
+
+        input:
+            1. char *first_part: the first_part of the number AKA "cmd #num something1 something1" -> "num"
+            2. char **output: the part after the number AKA "cmd #num something1 something2" -> "something1"
+            3. int *num: the number to be outputted. the original value doesn't matter.
+            4. boolean first: is the number the first parameter(TRUE) or the second(FALSE).
+            5. size_t line: the line that the command is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     size_t i = 0;
@@ -172,6 +184,18 @@ state parse_number(char *first_part, char **output, int *num, boolean first, siz
 
 state parse_register(char *input, char **output, instruction *dr_ptr, boolean first, size_t line)
 {
+    /*
+        this function parses a register in the input line for use inside an instruction.
+
+        input:
+            1. char *input: the first_part of the register AKA "cmd r3 something1 something1" -> "r3"
+            2. char **output: the part after the register AKA "cmd r3 something1 something2" -> "something1"
+            3. instruction *dr_ptr: the instruction to be changed and added to by the function.
+            4. boolean first: is the register the first parameter(TRUE) or the second(FALSE).
+            5. size_t line: the line that the command is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
     status.line_num = line;
 
@@ -259,6 +283,15 @@ state parse_register(char *input, char **output, instruction *dr_ptr, boolean fi
 
 state check_symbol_name_validity_for_parse(const char *name, size_t line)
 {
+    /*
+        the function checks the symbol validity to use in a command.
+
+        input:
+            1. const char *name: the name of the command inputted.
+            2. size_t line: the line that the command is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     size_t i = 1;
     state status = DEFAULT_STATE;
     status.line_num = line;
@@ -292,6 +325,18 @@ state check_symbol_name_validity_for_parse(const char *name, size_t line)
 
 state parse_symbol(char *input, char **output, char symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], boolean first, size_t line)
 {
+    /*
+        this function parses a symbol in the input line for use inside an instruction.
+
+        input:
+            1. char *input: the first_part of the register AKA "cmd name something1 something1" -> "name"
+            2. char **output: the part after the symbol AKA "cmd name something1 something2" -> "something1"
+            3. char symbol_name[MAX_SYMBOL_NAME_LENGTH + 1]: the name of the symbol to be outputted. initial value doesn't matter.
+            4. boolean first: is the symbol the first parameter(TRUE) or the second(FALSE).
+            5. size_t line: the line that the command is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     int i = 0;
     char *before;
     
@@ -350,8 +395,15 @@ state parse_symbol(char *input, char **output, char symbol_name[MAX_SYMBOL_NAME_
 /* COMMANDS */
 state parse_add(void *output, size_t line)
 {
-    /* possible inputs: 0,1,3 */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "add".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -367,6 +419,7 @@ state parse_add(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: 0,1,3 */
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
     {
@@ -404,6 +457,7 @@ state parse_add(void *output, size_t line)
         status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -445,8 +499,15 @@ state parse_add(void *output, size_t line)
 
 state parse_bne(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,2 */
+    /*
+        this function pareses the command "bne".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1];
@@ -460,10 +521,12 @@ state parse_bne(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,2 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -507,8 +570,15 @@ state parse_bne(void *output, size_t line)
 
 state parse_clr(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "clr".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -522,10 +592,12 @@ state parse_clr(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -565,8 +637,15 @@ state parse_clr(void *output, size_t line)
 
 state parse_cmp(void *output, size_t line)
 {
-    /* possible inputs: 0,1,3 */
-    /* possible outputs: 0,1,3 */
+    /*
+        this function pareses the command "cmp".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -582,6 +661,7 @@ state parse_cmp(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: 0,1,3 */
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
     {
@@ -619,6 +699,7 @@ state parse_cmp(void *output, size_t line)
         status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
+    /* possible outputs: 0,1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -669,8 +750,15 @@ state parse_cmp(void *output, size_t line)
 
 state parse_dec(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "dec".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -684,10 +772,12 @@ state parse_dec(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -727,8 +817,15 @@ state parse_dec(void *output, size_t line)
 
 state parse_inc(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "inc".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -742,10 +839,12 @@ state parse_inc(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -785,8 +884,15 @@ state parse_inc(void *output, size_t line)
 
 state parse_jmp(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,2 */
+    /*
+        this function pareses the command "jmp".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1];
@@ -800,10 +906,12 @@ state parse_jmp(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,2 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -847,8 +955,15 @@ state parse_jmp(void *output, size_t line)
 
 state parse_jsr(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,2 */
+    /*
+        this function pareses the command "jsr".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1];
@@ -862,10 +977,12 @@ state parse_jsr(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,2 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -909,8 +1026,15 @@ state parse_jsr(void *output, size_t line)
 
 state parse_lea(void *output, size_t line)
 {
-    /* possible inputs: 1 */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "lea".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -924,6 +1048,7 @@ state parse_lea(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: 1 */
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
     {
@@ -947,6 +1072,7 @@ state parse_lea(void *output, size_t line)
         status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -988,8 +1114,15 @@ state parse_lea(void *output, size_t line)
 
 state parse_mov(void *output, size_t line)
 {
-    /* possible inputs: 0,1,3 */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "mov".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -1005,6 +1138,7 @@ state parse_mov(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: 0,1,3 */
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
     {
@@ -1042,6 +1176,7 @@ state parse_mov(void *output, size_t line)
         status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -1083,8 +1218,15 @@ state parse_mov(void *output, size_t line)
 
 state parse_not(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "not".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -1098,10 +1240,12 @@ state parse_not(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -1141,8 +1285,15 @@ state parse_not(void *output, size_t line)
 
 state parse_prn(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 0,1,3 */
+    /*
+        this function pareses the command "prn".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -1158,10 +1309,12 @@ state parse_prn(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 0,1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -1210,8 +1363,15 @@ state parse_prn(void *output, size_t line)
 
 state parse_red(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: 0,1,3 */
+    /*
+        this function pareses the command "red".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -1227,10 +1387,12 @@ state parse_red(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
 
     /* OUTPUT */
+    /* possible outputs: 0,1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
@@ -1279,8 +1441,15 @@ state parse_red(void *output, size_t line)
 
 state parse_rts(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: none */
+    /*
+        this function pareses the command "rts".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part;
@@ -1293,7 +1462,9 @@ state parse_rts(void *output, size_t line)
     dr_ptr->cmd = commands[13];
     dr_ptr->number_of_words = 1;
 
-    /* INPUT */
+    /* INPUT & OUTPUT */
+    /* possible inputs: none */
+    /* possible outputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
     dr_ptr->output_type = NO_OPERAND;
@@ -1305,8 +1476,15 @@ state parse_rts(void *output, size_t line)
 
 state parse_stop(void *output, size_t line)
 {
-    /* possible inputs: none */
-    /* possible outputs: none */
+    /*
+        this function pareses the command "stop".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part;
@@ -1319,7 +1497,9 @@ state parse_stop(void *output, size_t line)
     dr_ptr->cmd = commands[14];
     dr_ptr->number_of_words = 1;
 
-    /* INPUT */
+    /* INPUT & OUTPUT */
+    /* possible inputs: none */
+    /* possible outputs: none */
     part = strtok(NULL, WHITESPACES);
     dr_ptr->input_type = NO_OPERAND;
     dr_ptr->output_type = NO_OPERAND;
@@ -1331,8 +1511,15 @@ state parse_stop(void *output, size_t line)
 
 state parse_sub(void *output, size_t line)
 {
-    /* possible inputs: 0,1,3 */
-    /* possible outputs: 1,3 */
+    /*
+        this function pareses the command "sub".
+        
+        input:
+            1. void *output: the instruction with all it's parameters to be outputted. inital value doesn't matter.
+            2. size_t line: the line that the instruction is on - used for error output.
+        output(state):
+            the state of the program at the end of the function.
+    */
     state status = DEFAULT_STATE;
 
     char *part, symbol_name[MAX_SYMBOL_NAME_LENGTH + 1], *before;
@@ -1348,6 +1535,7 @@ state parse_sub(void *output, size_t line)
     dr_ptr->number_of_words = 1;
 
     /* INPUT */
+    /* possible inputs: 0,1,3 */
     part = strtok(NULL, WHITESPACES);
     if (part != NULL)
     {
@@ -1385,6 +1573,7 @@ state parse_sub(void *output, size_t line)
         status.status = E_INSTRUCTION_MISSING_PARAM;
 
     /* OUTPUT */
+    /* possible outputs: 1,3 */
     if (status.status == OK && (part == NULL || part[0] == '\0'))
     {
         part = strtok(NULL, WHITESPACES);
