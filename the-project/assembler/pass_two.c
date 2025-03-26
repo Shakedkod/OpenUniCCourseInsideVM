@@ -4,7 +4,6 @@
 #include "pass_two.h"
 #include "types/file.h"
 
-state add_entry(entry_node *list, directive value, symbol_node *symbols);
 int get_number_of_words_before_output(directive dr);
 
 state translate_directives(directive_node *directives, symbol_node *symbols, external_node *externals, entry_node *entries)
@@ -287,43 +286,16 @@ state create_files(directive_node *directives, external_node *externals, entry_n
 }
 
 /* translate_directives helper methods */
-state add_entry(entry_node *list, directive value, symbol_node *symbols)
-{
-	state status = DEFAULT_STATE;
-	symbol *symb;
-	entry_node *ptr = list, *before;
-
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = init_entry_node();
-	before = ptr;
-	ptr = ptr->next;
-
-	if (ptr != NULL)
-	{
-		symb = get_symbol_in_list(symbols, value.line.value.data.symbol);
-		if (symb != NULL)
-		{
-			ptr->value.appearance = symb->symbol_address;
-			strcpy(ptr->value.name, symb->name);
-		}
-		else
-			status.status = E_ENTRY_SYMBOL_NOT_FOUND;
-
-		if (status.status != OK)
-		{
-			free(ptr);
-			before->next = NULL;
-		}
-	}
-	else
-		status.status = E_MEMORY_NEEDED;
-
-	return status;
-}
-
 int get_number_of_words_before_output(directive dr)
 {
+	/*
+		gets the number of words before the output word if there is one.
+
+		input:
+			1. directive dr: the directive to check.
+		output(int):
+			the number of words before the output word.
+	*/
 	int output = 1;
 
 	switch (dr.line.inst.input_type)
